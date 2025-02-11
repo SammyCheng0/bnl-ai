@@ -121,11 +121,15 @@ class TopViewDataset(Dataset):
         # Random rotation
         if self.rotate:
             # angle = random.uniform(-self.rotation, self.rotation)
-            angle = random.choice([90, 180, 270])
+            # angle = random.choice([90, 180, 270])
+            angle = random.randint(0, 360)
+            print(angle)
             # Calculate bounding box of the rotated image and rotate image
             crop_width, crop_height = transformed_image.size
             angle_rad = math.radians(angle)
             transformed_image = F.rotate(transformed_image, angle, expand=True)
+            # plt.plot(transformed_image)
+            # plt.show()
             if not self.infer:
                 # Rotate keypoints
                 center_x, center_y = transformed_image.size[0] / 2, transformed_image.size[1] / 2
@@ -143,6 +147,9 @@ class TopViewDataset(Dataset):
 
         # Calculate padding to match the aspect ratio
         padding_width, padding_height = calculate_padding(*transformed_image.size, *self.output_size)
+        
+        # print("width: ", padding_width, ", height: ", padding_height)
+        # black_img = 
         # print(f"padding width: {padding_width}, padding height: {padding_height}")
         transformed_image = Pad(padding=(padding_width, padding_height), fill=0, padding_mode='constant')(transformed_image)
         if not self.infer:
@@ -252,8 +259,8 @@ def generate_heatmap(image, keypoint, padding_width, padding_height, heatmap_siz
 
 if __name__ == "__main__":
     # Set paths
-    image_folder = "data/dataset"
-    label_file = "data/dataset/labels.csv"
+    image_folder = "test"
+    label_file = "labels.csv"
 
     # Create dataset and data loader
     dataset = TopViewDataset(image_folder=image_folder,
@@ -264,7 +271,7 @@ if __name__ == "__main__":
     # Iterate through the data loader
     # selec a random integer between 0 and dataset length
     index = random.randint(0, len(dataset))
-    for i, (images, heatmaps) in enumerate(data_loader):
+    for i, (images, _, heatmaps, _, _) in enumerate(data_loader):
         if i % 5 == 0:  # Show every 10th batch
             image = images[0]
             heatmaps = heatmaps[0]
