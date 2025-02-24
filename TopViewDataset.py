@@ -12,6 +12,7 @@ import matplotlib.colors as mcolors
 import math
 import cv2
 import numpy as np
+from PIL import ImageChops
 
 def calculate_padding(original_width, original_height, target_width, target_height):
     original_aspect_ratio = original_width / original_height
@@ -121,9 +122,7 @@ class TopViewDataset(Dataset):
         # Random rotation
         if self.rotate:
             # angle = random.uniform(-self.rotation, self.rotation)
-            # angle = random.choice([90, 180, 270])
-            angle = random.randint(0, 360)
-            print(angle)
+            angle = random.choice([90, 180, 270])
             # Calculate bounding box of the rotated image and rotate image
             crop_width, crop_height = transformed_image.size
             angle_rad = math.radians(angle)
@@ -145,18 +144,32 @@ class TopViewDataset(Dataset):
         # --- Add padding and resize -------
         # ----------------------------------
 
+        scale_size = round(random.uniform(0.9 , 1.2), 1)
+        print("scale: ", scale_size)
+
+        image_width, image_length = transformed_image.size
+        print("old: ", transformed_image.size)
+        transformed_width = round(image_width*scale_size, 0)
+        transformed_length = round(image_length*scale_size, 0)
+        print("new: ", transformed_width, transformed_length)
+        
         # Calculate padding to match the aspect ratio
         padding_width, padding_height = calculate_padding(*transformed_image.size, *self.output_size)
-        
-        # print("width: ", padding_width, ", height: ", padding_height)
-        # black_img = 
-        # print(f"padding width: {padding_width}, padding height: {padding_height}")
+        print("padding old", padding_width, padding_height)
+
+        transformed_image = transformed_image.resize((int(transformed_width), int(transformed_length)))
+        print("resized: ",transformed_image.size)
+
+        padding_width_old, padding_height_old = calculate_padding(*transformed_image.size, *self.output_size)
+        print("padding new: ", padding_width_old, padding_height_old)
+
         transformed_image = Pad(padding=(padding_width, padding_height), fill=0, padding_mode='constant')(transformed_image)
         if not self.infer:
             # Add padding to keypoints
             keypoints += torch.tensor([padding_width, padding_height])  # Adjust for padding
             keypoints = keypoints.view(-1)
-        # Resize image to output size
+
+        
         scale_x = self.output_size[1] / transformed_image.size[0]
         scale_y = self.output_size[0] / transformed_image.size[1]
         transformed_image = F.resize(transformed_image, self.output_size)
@@ -169,7 +182,7 @@ class TopViewDataset(Dataset):
 
         if self.debug:
             not_normalized_image = np.array(transformed_image.copy())
-            # # add keypoints to not_normalized_image
+            # add keypoints to not_normalized_image
             # for i in range(0, len(keypoints), 2):
             #     x = int(keypoints[i].item())
             #     y = int(keypoints[i+1].item())
@@ -180,13 +193,43 @@ class TopViewDataset(Dataset):
         transformed_image = F.to_tensor(transformed_image)
         transformed_image = F.normalize(transformed_image, mean=[0.5] * 3, std=[0.5] * 3)
 
-        # print(f'transformed_image size: {transformed_image.size()}')
-        # print(f'transformed_image aspect ratio: {transformed_image.size(1) / transformed_image.size(2)}')
-        # print(f'output aspect ratio: {self.output_size[0] / self.output_size[1]}')
-        # print(f'mean: {transformed_image.mean()}')
-        # print(f'std: {transformed_image.std()}')
-        # print(f'min: {transformed_image.min()}')
-        # print(f'max: {transformed_image.max()}')
+        """Original"""
+        # # Calculate padding to match the aspect ratio
+        # padding_width, padding_height = calculate_padding(*transformed_image.size, *self.output_size)
+
+        # # print(f"padding width: {padding_width}, padding height: {padding_height}")
+        # transformed_image = Pad(padding=(padding_width, padding_height), fill=0, padding_mode='constant')(transformed_image)
+        # if not self.infer:
+        #     # Add padding to keypoints
+        #     keypoints += torch.tensor([padding_width, padding_height])  # Adjust for padding
+        #     keypoints = keypoints.view(-1)
+        # # Resize image to output size
+        # # scale_x = self.output_size[1] / transformed_image.size[0]
+        # # scale_y = self.output_size[0] / transformed_image.size[1]
+
+        
+        # scale_x = self.output_size[1] / transformed_image.size[0]
+        # scale_y = self.output_size[0] / transformed_image.size[1]
+        # transformed_image = F.resize(transformed_image, self.output_size)
+        # if not self.infer:
+        #     # Resize keypoints
+        #     keypoints[::2] *= scale_x  # Scale x-coordinates
+        #     keypoints[1::2] *= scale_y  # Scale y-coordinates
+        #     padding_width_hm  = int( padding_width * scale_x)
+        #     padding_height_hm = int( padding_height * scale_y)
+
+        # if self.debug:
+        #     not_normalized_image = np.array(transformed_image.copy())
+        #     # # add keypoints to not_normalized_image
+        #     # for i in range(0, len(keypoints), 2):
+        #     #     x = int(keypoints[i].item())
+        #     #     y = int(keypoints[i+1].item())
+        #     #     cv2.circle(not_normalized_image, (x, y), 2, (255, 0, 0), -1)
+
+
+        # # Normalize image
+        # transformed_image = F.to_tensor(transformed_image)
+        # transformed_image = F.normalize(transformed_image, mean=[0.5] * 3, std=[0.5] * 3)
 
         # ----------------------------------
         # ------- Generate heatmaps --------
