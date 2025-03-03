@@ -144,6 +144,7 @@ class TopViewDataset(Dataset):
         # --- Add padding and resize -------
         # ----------------------------------
 
+        # Percentage of scaling of the cropped mouse photo
         scale_size = round(random.uniform(0.9 , 1.2), 1)
         print("scale: ", scale_size)
 
@@ -157,11 +158,20 @@ class TopViewDataset(Dataset):
         padding_width, padding_height = calculate_padding(*transformed_image.size, *self.output_size)
         print("padding old", padding_width, padding_height)
 
+        # resizing the mouse photo with the scale
         transformed_image = transformed_image.resize((int(transformed_width), int(transformed_length)))
         print("resized: ",transformed_image.size)
 
+        if not self.infer:
+            # Resize keypoints
+            keypoints[::2] *= scale_size  # Scale x-coordinates
+            keypoints[1::2] *= scale_size  # Scale y-coordinates
+            padding_width_hm  = int( padding_width * scale_size)
+            padding_height_hm = int( padding_height * scale_size)
+        
         padding_width_old, padding_height_old = calculate_padding(*transformed_image.size, *self.output_size)
         print("padding new: ", padding_width_old, padding_height_old)
+
 
         transformed_image = Pad(padding=(padding_width, padding_height), fill=0, padding_mode='constant')(transformed_image)
         if not self.infer:
@@ -192,6 +202,147 @@ class TopViewDataset(Dataset):
         # Normalize image
         transformed_image = F.to_tensor(transformed_image)
         transformed_image = F.normalize(transformed_image, mean=[0.5] * 3, std=[0.5] * 3)
+
+        def get_motion_blur_kernel(x, y, thickness=5, ksize=21):
+            """ Obtains Motion Blur Kernel
+                Inputs:
+                    x - horizontal direction of blur
+                    y - vertical direction of blur
+                    thickness - thickness of blur kernel line
+                    ksize - size of blur kernel
+                Outputs:
+                    blur_kernel
+                """
+            blur_kernel = np.zeros((ksize, ksize))
+            c = int(ksize/2)
+
+            # blur_kernel = np.zeros((ksize, ksize))
+            # blur_kernel = cv2.line(blur_kernel, (c+x,c+y), (c,c), (255,), thickness)
+
+            blur_kernel[c, :] = 255  # fill a horizontal line at the center row with ones
+
+            # You can adjust the thickness if you want the blur line to be thicker.
+            # If you want a more complex blur pattern, you can add additional lines.
+            blur_kernel /= ksize 
+            return blur_kernel
+        
+        # # make blur kernel and apply it
+        # image_width, image_length = transformed_image.size
+        # blur_kernel = get_motion_blur_kernel(x=image_width, y=image_length, thickness=1, ksize=31)
+        # transformed_image = cv2.filter2D(transformed_image, ddepth=-1, kernel=blur_kernel)
+
+        # Example: Convert image to NumPy array if it's a PIL Image
+        transformed_image = np.array(transformed_image)
+
+        # Make blur kernel and apply it
+        image_width, image_length = transformed_image.shape[1], transformed_image.shape[0]  # Use shape for NumPy arrays
+        blur_kernel = get_motion_blur_kernel(x=0, y=0, thickness=1, ksize=5)  # You can adjust x and y to control the direction
+
+        # Apply motion blur using filter2D
+        transformed_image = cv2.filter2D(transformed_image, ddepth=-1, kernel=blur_kernel)
+
+        # If you need to convert back to a tensor, do it after processing
+        transformed_image = torch.from_numpy(transformed_image).float() / 255.0
+
+        # Convert tensor to NumPy array
+        np_image = transformed_image.permute(1, 2, 0).numpy()  # Change shape to (H, W, C)
+
+        # Normalize the values between 0 and 1 (if needed)
+        np_image = np.clip(np_image, 0, 1)  # Ensure the values are in the range [0, 1]
+
+        # Plot the image using Matplotlib
+        plt.imshow(np_image)
+        plt.show()
+
+
+        # def get_motion_blur_kernel(x, y, thickness=5, ksize=21):
+        #     """ Obtains Motion Blur Kernel
+        #         Inputs:
+        #             x - horizontal direction of blur
+        #             y - vertical direction of blur
+        #             thickness - thickness of blur kernel line
+        #             ksize - size of blur kernel
+        #         Outputs:
+        #             blur_kernel
+        #         """
+        #     blur_kernel = np.zeros((ksize, ksize))
+        #     c = int(ksize/2)
+
+        #     # blur_kernel = np.zeros((ksize, ksize))
+        #     # blur_kernel = cv2.line(blur_kernel, (c+x,c+y), (c,c), (255,), thickness)
+
+        #     blur_kernel[c, :] = 255  # fill a horizontal line at the center row with ones
+
+        #     # You can adjust the thickness if you want the blur line to be thicker.
+        #     # If you want a more complex blur pattern, you can add additional lines.
+        #     blur_kernel /= ksize 
+        #     return blur_kernel
+        
+        # # # make blur kernel and apply it
+        # # image_width, image_length = transformed_image.size
+        # # blur_kernel = get_motion_blur_kernel(x=image_width, y=image_length, thickness=1, ksize=31)
+        # # transformed_image = cv2.filter2D(transformed_image, ddepth=-1, kernel=blur_kernel)
+
+        # # Example: Convert image to NumPy array if it's a PIL Image
+        # transformed_image = np.array(transformed_image)
+
+        # # Make blur kernel and apply it
+        # image_width, image_length = transformed_image.shape[1], transformed_image.shape[0]  # Use shape for NumPy arrays
+        # blur_kernel = get_motion_blur_kernel(x=0, y=0, thickness=1, ksize=31)  # You can adjust x and y to control the direction
+
+        # # Apply motion blur using filter2D
+        # transformed_image = cv2.filter2D(transformed_image, ddepth=-1, kernel=blur_kernel)
+
+        # # If you need to convert back to a tensor, do it after processing
+        # transformed_image = torch.from_numpy(transformed_image).float() / 255.0
+
+        # # Convert tensor to NumPy array
+        # np_image = transformed_image.permute(1, 2, 0).numpy()  # Change shape to (H, W, C)
+
+        # # Normalize the values between 0 and 1 (if needed)
+        # np_image = np.clip(np_image, 0, 1)  # Ensure the values are in the range [0, 1]
+
+        # # Plot the image using Matplotlib
+        # plt.imshow(np_image)
+        # plt.show()
+
+        "motion blur but colours change"
+        # kernel_size = 30
+
+        # # Create the vertical kernel
+        # kernel_h = np.zeros((kernel_size, kernel_size), dtype=np.float32)
+
+        # # Fill the middle row with ones
+        # kernel_h[int((kernel_size - 1) / 2), :] = np.ones(kernel_size)
+
+        # # Normalize
+        # kernel_h /= kernel_size
+
+        # # 🔹 Convert PyTorch tensor to NumPy
+        # transformed_image_np = transformed_image.cpu().numpy()
+
+        # # 🔹 Handle RGB and grayscale cases separately
+        # if transformed_image_np.shape[0] == 3:  # RGB (C, H, W)
+        #     transformed_image_np = transformed_image_np.transpose(1, 2, 0)  # Convert to (H, W, C)
+        #     transformed_image_np = (transformed_image_np * 255).astype(np.uint8)
+        #     transformed_image_np = cv2.cvtColor(transformed_image_np, cv2.COLOR_RGB2GRAY)  # Convert to grayscale
+        # else:  # Grayscale (1, H, W)
+        #     transformed_image_np = transformed_image_np.squeeze(0)  # Convert to (H, W)
+        #     transformed_image_np = (transformed_image_np * 255).astype(np.uint8)
+
+        # # ✅ Apply filter
+        # filtered_image = cv2.filter2D(transformed_image_np, -1, kernel_h)
+
+        # # 🔹 Convert back to PyTorch tensor (if needed)
+        # # transformed_image = torch.from_numpy(filtered_image).float() / 255  # Normalize back to [0,1]
+
+        # # Convert NumPy array back to PyTorch tensor
+        # transformed_image = torch.from_numpy(filtered_image).float() / 255  # (H, W)
+
+        # # 🔹 Add a channel dimension to match (C, H, W) format
+        # transformed_image = transformed_image.unsqueeze(0)  # Shape becomes (1, H, W)
+
+        # print("Filtering complete!")
 
         """Original"""
         # # Calculate padding to match the aspect ratio
