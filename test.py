@@ -47,8 +47,14 @@ if not os.path.exists(output_folder):
     # os.makedirs(output_folder)
     pass
 
-dataset = TopViewDataset(image_folder='data/dataset/test', 
-                       label_file='data/dataset/labels.csv', 
+# dataset = TopViewDataset(image_folder='data/dataset/test', 
+#                        label_file='data/dataset/labels.csv', 
+#                        output_size=(256, 192),
+#                        debug=True,
+#                        rotate=False)
+
+dataset = TopViewDataset(image_folder='test', 
+                       label_file='labels.csv', 
                        output_size=(256, 192),
                        debug=True,
                        rotate=False)

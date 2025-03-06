@@ -9,7 +9,7 @@ import multiprocessing
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader, Dataset, random_split
 from hrnet_w32_256 import get_pose_net 
-from TopViewDataset import TopViewDataset
+from SideViewDataset import SideViewDataset
 import os
 from datetime import datetime
 
@@ -57,11 +57,11 @@ if __name__ == '__main__':
     #                             label_file='data/dataset/labels.csv',
     #                             output_size=(256, 192))
 
-    train_dataset = TopViewDataset(image_folder='train', 
-                                label_file='labels.csv', 
+    train_dataset = SideViewDataset(image_folder='train', 
+                                label_file='sorted_annotations.csv', 
                                 output_size=(256, 192))
-    test_dataset  = TopViewDataset(image_folder='test',
-                                label_file='labels.csv',
+    test_dataset  = SideViewDataset(image_folder='test',
+                                label_file='sorted_annotations.csv',
                                 output_size=(256, 192))
 
 

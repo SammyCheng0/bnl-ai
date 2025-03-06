@@ -275,7 +275,8 @@ class PoseHighResolutionNet(nn.Module):
             "MODEL": {
                 "INIT_WEIGHTS": True,
                 "NAME": "pose_hrnet",
-                "NUM_JOINTS": 14,
+                # "NUM_JOINTS": 14,
+                "NUM_JOINTS": 26,
                 "PRETRAINED": "data/hrnet_w32-36af842e.pth",
                 "TARGET_TYPE": "gaussian",
                 "IMAGE_SIZE": [192, 256],
