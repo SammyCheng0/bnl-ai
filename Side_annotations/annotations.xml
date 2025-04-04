@@ -1,0 +1,1334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <task>
+      <id>59</id>
+      <name>20241115-155653-374281_0</name>
+      <size>13</size>
+      <mode>annotation</mode>
+      <overlap>0</overlap>
+      <bugtracker></bugtracker>
+      <created>2025-04-04 14:17:18.121933+00:00</created>
+      <updated>2025-04-04 14:17:19.329627+00:00</updated>
+      <subset>default</subset>
+      <start_frame>0</start_frame>
+      <stop_frame>12</stop_frame>
+      <frame_filter></frame_filter>
+      <segments>
+        <segment>
+          <id>59</id>
+          <start>0</start>
+          <stop>12</stop>
+          <url>http://localhost:8080/api/jobs/59</url>
+        </segment>
+      </segments>
+      <owner>
+        <username>admin</username>
+        <email>Sammy-cheng@live.nl</email>
+      </owner>
+      <assignee></assignee>
+      <labels>
+        <label>
+          <name>BottomSkeleton</name>
+          <color>#8029de</color>
+          <type>skeleton</type>
+          <attributes>
+          </attributes>
+          <svg>&lt;line x1="42.53623580932617" y1="58.892486572265625" x2="42.36928939819336" y2="64.56865692138672" data-type="edge" data-node-from="11" data-node-to="12"&gt;&lt;/line&gt;
+&lt;line x1="42.8701286315918" y1="53.717159271240234" x2="42.53623580932617" y2="58.892486572265625" data-type="edge" data-node-from="10" data-node-to="11"&gt;&lt;/line&gt;
+&lt;line x1="43.03707504272461" y1="49.04266357421875" x2="42.8701286315918" y2="53.717159271240234" data-type="edge" data-node-from="9" data-node-to="10"&gt;&lt;/line&gt;
+&lt;line x1="43.370967864990234" y1="43.36649703979492" x2="43.03707504272461" y2="49.04266357421875" data-type="edge" data-node-from="8" data-node-to="9"&gt;&lt;/line&gt;
+&lt;line x1="50.614036560058594" y1="39.94437789916992" x2="50.948486328125" y2="34.4259033203125" data-type="edge" data-node-from="7" data-node-to="5"&gt;&lt;/line&gt;
+&lt;line x1="37.40313720703125" y1="39.60992431640625" x2="37.40313720703125" y2="34.76035690307617" data-type="edge" data-node-from="6" data-node-to="4"&gt;&lt;/line&gt;
+&lt;circle r="0.75" cx="44.09219741821289" cy="9.509143829345703" data-type="element node" data-element-id="1" data-node-id="1" data-label-name="nose"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="37.40313720703125" cy="17.703245162963867" data-type="element node" data-element-id="2" data-node-id="2" data-label-name="front_right_paw"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="50.948486328125" cy="18.03769874572754" data-type="element node" data-element-id="3" data-node-id="3" data-label-name="front_left_paw"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="37.40313720703125" cy="34.76035690307617" data-type="element node" data-element-id="4" data-node-id="4" data-label-name="back_right_paw"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="50.948486328125" cy="34.4259033203125" data-type="element node" data-element-id="5" data-node-id="5" data-label-name="back_left_paw"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="37.40313720703125" cy="39.60992431640625" data-type="element node" data-element-id="6" data-node-id="6" data-label-name="back_right_wrist"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="50.614036560058594" cy="39.94437789916992" data-type="element node" data-element-id="7" data-node-id="7" data-label-name="back_left_wrist"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="43.370967864990234" cy="43.36649703979492" data-type="element node" data-element-id="8" data-node-id="8" data-label-name="tail_base"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="43.03707504272461" cy="49.04266357421875" data-type="element node" data-element-id="9" data-node-id="9" data-label-name="tail_upper_midpoint"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="42.8701286315918" cy="53.717159271240234" data-type="element node" data-element-id="10" data-node-id="10" data-label-name="tail_midpoint"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="42.53623580932617" cy="58.892486572265625" data-type="element node" data-element-id="11" data-node-id="11" data-label-name="tail_lower_midpoint"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="42.36928939819336" cy="64.56865692138672" data-type="element node" data-element-id="12" data-node-id="12" data-label-name="tail_end"&gt;&lt;/circle&gt;</svg>
+        </label>
+        <label>
+          <name>nose</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>BottomSkeleton</parent>
+        </label>
+        <label>
+          <name>front_right_paw</name>
+          <color>#fa3253</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>BottomSkeleton</parent>
+        </label>
+        <label>
+          <name>front_left_paw</name>
+          <color>#33ddff</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>BottomSkeleton</parent>
+        </label>
+        <label>
+          <name>back_right_paw</name>
+          <color>#fa3253</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>BottomSkeleton</parent>
+        </label>
+        <label>
+          <name>back_left_paw</name>
+          <color>#33ddff</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>BottomSkeleton</parent>
+        </label>
+        <label>
+          <name>back_right_wrist</name>
+          <color>#fa3253</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>BottomSkeleton</parent>
+        </label>
+        <label>
+          <name>back_left_wrist</name>
+          <color>#33ddff</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>BottomSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_base</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>BottomSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_upper_midpoint</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>BottomSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_midpoint</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>BottomSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_lower_midpoint</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>BottomSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_end</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>BottomSkeleton</parent>
+        </label>
+        <label>
+          <name>TopSkeleton</name>
+          <color>#0bf116</color>
+          <type>skeleton</type>
+          <attributes>
+          </attributes>
+          <svg>&lt;line x1="47.26950454711914" y1="15.839864730834961" x2="51.45016860961914" y2="16.007091522216797" data-type="edge" data-node-from="2" data-node-to="11"&gt;&lt;/line&gt;
+&lt;line x1="42.92161178588867" y1="15.839864730834961" x2="47.26950454711914" y2="15.839864730834961" data-type="edge" data-node-from="13" data-node-to="2"&gt;&lt;/line&gt;
+&lt;line x1="42.92161178588867" y1="15.839864730834961" x2="39.74430847167969" y2="21.023887634277344" data-type="edge" data-node-from="13" data-node-to="14"&gt;&lt;/line&gt;
+&lt;line x1="47.26950454711914" y1="9.318028450012207" x2="42.92161178588867" y2="15.839864730834961" data-type="edge" data-node-from="1" data-node-to="13"&gt;&lt;/line&gt;
+&lt;line x1="51.45016860961914" y1="16.007091522216797" x2="54.29301834106445" y2="20.52220916748047" data-type="edge" data-node-from="11" data-node-to="12"&gt;&lt;/line&gt;
+&lt;line x1="47.26950454711914" y1="9.318028450012207" x2="51.45016860961914" y2="16.007091522216797" data-type="edge" data-node-from="1" data-node-to="11"&gt;&lt;/line&gt;
+&lt;line x1="47.436729431152344" y1="53.13138961791992" x2="47.26950454711914" y2="58.81709289550781" data-type="edge" data-node-from="9" data-node-to="10"&gt;&lt;/line&gt;
+&lt;line x1="47.436729431152344" y1="48.28181838989258" x2="47.436729431152344" y2="53.13138961791992" data-type="edge" data-node-from="8" data-node-to="9"&gt;&lt;/line&gt;
+&lt;line x1="47.26950454711914" y1="42.261661529541016" x2="47.436729431152344" y2="48.28181838989258" data-type="edge" data-node-from="7" data-node-to="8"&gt;&lt;/line&gt;
+&lt;line x1="47.26950454711914" y1="37.41209030151367" x2="47.26950454711914" y2="42.261661529541016" data-type="edge" data-node-from="6" data-node-to="7"&gt;&lt;/line&gt;
+&lt;line x1="47.26950454711914" y1="31.391935348510742" x2="47.26950454711914" y2="37.41209030151367" data-type="edge" data-node-from="5" data-node-to="6"&gt;&lt;/line&gt;
+&lt;line x1="47.436729431152344" y1="26.375139236450195" x2="47.26950454711914" y2="31.391935348510742" data-type="edge" data-node-from="4" data-node-to="5"&gt;&lt;/line&gt;
+&lt;line x1="47.10227584838867" y1="21.19111442565918" x2="47.436729431152344" y2="26.375139236450195" data-type="edge" data-node-from="3" data-node-to="4"&gt;&lt;/line&gt;
+&lt;line x1="47.26950454711914" y1="15.839864730834961" x2="47.10227584838867" y2="21.19111442565918" data-type="edge" data-node-from="2" data-node-to="3"&gt;&lt;/line&gt;
+&lt;line x1="47.26950454711914" y1="9.318028450012207" x2="47.26950454711914" y2="15.839864730834961" data-type="edge" data-node-from="1" data-node-to="2"&gt;&lt;/line&gt;
+&lt;circle r="0.75" cx="47.26950454711914" cy="9.318028450012207" data-type="element node" data-element-id="1" data-node-id="1" data-label-name="nose"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="47.26950454711914" cy="15.839864730834961" data-type="element node" data-element-id="2" data-node-id="2" data-label-name="ears_midpoint"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="47.10227584838867" cy="21.19111442565918" data-type="element node" data-element-id="3" data-node-id="3" data-label-name="back_withers"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="47.436729431152344" cy="26.375139236450195" data-type="element node" data-element-id="4" data-node-id="4" data-label-name="back_midpoint"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="47.26950454711914" cy="31.391935348510742" data-type="element node" data-element-id="5" data-node-id="5" data-label-name="back_croup"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="47.26950454711914" cy="37.41209030151367" data-type="element node" data-element-id="6" data-node-id="6" data-label-name="tail_base"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="47.26950454711914" cy="42.261661529541016" data-type="element node" data-element-id="7" data-node-id="7" data-label-name="tail_upper_midpont"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="47.436729431152344" cy="48.28181838989258" data-type="element node" data-element-id="8" data-node-id="8" data-label-name="tail_midpoint"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="47.436729431152344" cy="53.13138961791992" data-type="element node" data-element-id="9" data-node-id="9" data-label-name="tail_lower_midpont"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="47.26950454711914" cy="58.81709289550781" data-type="element node" data-element-id="10" data-node-id="10" data-label-name="tail_end"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="51.45016860961914" cy="16.007091522216797" data-type="element node" data-element-id="11" data-node-id="11" data-label-name="right_ear_base"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="54.29301834106445" cy="20.52220916748047" data-type="element node" data-element-id="12" data-node-id="12" data-label-name="right_ear_tip"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="42.92161178588867" cy="15.839864730834961" data-type="element node" data-element-id="13" data-node-id="13" data-label-name="left_ear_base"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="39.74430847167969" cy="21.023887634277344" data-type="element node" data-element-id="14" data-node-id="14" data-label-name="left_ear_tip"&gt;&lt;/circle&gt;</svg>
+        </label>
+        <label>
+          <name>nose</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>ears_midpoint</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>back_withers</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>back_midpoint</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>back_croup</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_base</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_upper_midpont</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_midpoint</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_lower_midpont</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_end</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>right_ear_base</name>
+          <color>#fa3253</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>right_ear_tip</name>
+          <color>#fa3253</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>left_ear_base</name>
+          <color>#33ddff</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>left_ear_tip</name>
+          <color>#33ddff</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>TopSkeleton</parent>
+        </label>
+        <label>
+          <name>SideSkeleton</name>
+          <color>#b3dcff</color>
+          <type>skeleton</type>
+          <attributes>
+          </attributes>
+          <svg>&lt;line x1="70.08235168457031" y1="48.8757209777832" x2="74.75684356689453" y2="42.69871139526367" data-type="edge" data-node-from="22" data-node-to="23"&gt;&lt;/line&gt;
+&lt;line x1="59.56474304199219" y1="56.054405212402344" x2="70.08235168457031" y2="48.8757209777832" data-type="edge" data-node-from="21" data-node-to="22"&gt;&lt;/line&gt;
+&lt;line x1="46.70988845825195" y1="44.36817169189453" x2="59.56474304199219" y2="56.054405212402344" data-type="edge" data-node-from="5" data-node-to="21"&gt;&lt;/line&gt;
+&lt;line x1="26.843297958374023" y1="49.04266357421875" x2="23.003536224365234" y2="43.86733627319336" data-type="edge" data-node-from="25" data-node-to="26"&gt;&lt;/line&gt;
+&lt;line x1="35.524497985839844" y1="56.3882942199707" x2="26.843297958374023" y2="49.04266357421875" data-type="edge" data-node-from="24" data-node-to="25"&gt;&lt;/line&gt;
+&lt;line x1="46.70988845825195" y1="44.36817169189453" x2="35.524497985839844" y2="56.3882942199707" data-type="edge" data-node-from="5" data-node-to="24"&gt;&lt;/line&gt;
+&lt;line x1="35.19060516357422" y1="35.853919982910156" x2="26.175514221191406" y2="26.171043395996094" data-type="edge" data-node-from="19" data-node-to="20"&gt;&lt;/line&gt;
+&lt;line x1="46.54294204711914" y1="26.504934310913086" x2="35.19060516357422" y2="35.853919982910156" data-type="edge" data-node-from="3" data-node-to="19"&gt;&lt;/line&gt;
+&lt;line x1="62.06893539428711" y1="35.35308074951172" x2="71.41792297363281" y2="26.504934310913086" data-type="edge" data-node-from="17" data-node-to="18"&gt;&lt;/line&gt;
+&lt;line x1="46.54294204711914" y1="26.504934310913086" x2="62.06893539428711" y2="35.35308074951172" data-type="edge" data-node-from="3" data-node-to="17"&gt;&lt;/line&gt;
+&lt;line x1="46.70988845825195" y1="18.491519927978516" x2="51.38438034057617" y2="18.324573516845703" data-type="edge" data-node-from="2" data-node-to="14"&gt;&lt;/line&gt;
+&lt;line x1="43.03707504272461" y1="18.324573516845703" x2="46.70988845825195" y2="18.491519927978516" data-type="edge" data-node-from="13" data-node-to="2"&gt;&lt;/line&gt;
+&lt;line x1="43.03707504272461" y1="18.324573516845703" x2="39.86509704589844" y2="22.164335250854492" data-type="edge" data-node-from="13" data-node-to="15"&gt;&lt;/line&gt;
+&lt;line x1="44.539588928222656" y1="13.149243354797363" x2="43.03707504272461" y2="18.324573516845703" data-type="edge" data-node-from="11" data-node-to="13"&gt;&lt;/line&gt;
+&lt;line x1="46.70988845825195" y1="7.640020370483398" x2="44.539588928222656" y2="13.149243354797363" data-type="edge" data-node-from="1" data-node-to="11"&gt;&lt;/line&gt;
+&lt;line x1="51.38438034057617" y1="18.324573516845703" x2="54.556358337402344" y2="21.496551513671875" data-type="edge" data-node-from="14" data-node-to="16"&gt;&lt;/line&gt;
+&lt;line x1="49.38102722167969" y1="13.316189765930176" x2="51.38438034057617" y2="18.324573516845703" data-type="edge" data-node-from="12" data-node-to="14"&gt;&lt;/line&gt;
+&lt;line x1="46.70988845825195" y1="7.640020370483398" x2="49.38102722167969" y2="13.316189765930176" data-type="edge" data-node-from="1" data-node-to="12"&gt;&lt;/line&gt;
+&lt;line x1="46.70988845825195" y1="81.26327514648438" x2="46.757965087890625" y2="89.94447326660156" data-type="edge" data-node-from="9" data-node-to="10"&gt;&lt;/line&gt;
+&lt;line x1="46.70988845825195" y1="72.41512298583984" x2="46.70988845825195" y2="81.26327514648438" data-type="edge" data-node-from="8" data-node-to="9"&gt;&lt;/line&gt;
+&lt;line x1="46.70988845825195" y1="63.4000358581543" x2="46.70988845825195" y2="72.41512298583984" data-type="edge" data-node-from="7" data-node-to="8"&gt;&lt;/line&gt;
+&lt;line x1="46.70988845825195" y1="53.717159271240234" x2="46.70988845825195" y2="63.4000358581543" data-type="edge" data-node-from="6" data-node-to="7"&gt;&lt;/line&gt;
+&lt;line x1="46.70988845825195" y1="44.36817169189453" x2="46.70988845825195" y2="53.717159271240234" data-type="edge" data-node-from="5" data-node-to="6"&gt;&lt;/line&gt;
+&lt;line x1="46.54294204711914" y1="35.853919982910156" x2="46.70988845825195" y2="44.36817169189453" data-type="edge" data-node-from="4" data-node-to="5"&gt;&lt;/line&gt;
+&lt;line x1="46.54294204711914" y1="26.504934310913086" x2="46.54294204711914" y2="35.853919982910156" data-type="edge" data-node-from="3" data-node-to="4"&gt;&lt;/line&gt;
+&lt;line x1="46.70988845825195" y1="18.491519927978516" x2="46.54294204711914" y2="26.504934310913086" data-type="edge" data-node-from="2" data-node-to="3"&gt;&lt;/line&gt;
+&lt;line x1="46.70988845825195" y1="7.640020370483398" x2="46.70988845825195" y2="18.491519927978516" data-type="edge" data-node-from="1" data-node-to="2"&gt;&lt;/line&gt;
+&lt;circle r="0.75" cx="46.70988845825195" cy="7.640020370483398" data-type="element node" data-element-id="1" data-node-id="1" data-label-name="nose"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="46.70988845825195" cy="18.491519927978516" data-type="element node" data-element-id="2" data-node-id="2" data-label-name="ears_midpoint"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="46.54294204711914" cy="26.504934310913086" data-type="element node" data-element-id="3" data-node-id="3" data-label-name="back_withers"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="46.54294204711914" cy="35.853919982910156" data-type="element node" data-element-id="4" data-node-id="4" data-label-name="back_midpoint"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="46.70988845825195" cy="44.36817169189453" data-type="element node" data-element-id="5" data-node-id="5" data-label-name="back_croup"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="46.70988845825195" cy="53.717159271240234" data-type="element node" data-element-id="6" data-node-id="6" data-label-name="tail_base"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="46.70988845825195" cy="63.4000358581543" data-type="element node" data-element-id="7" data-node-id="7" data-label-name="tail_upper_midpont"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="46.70988845825195" cy="72.41512298583984" data-type="element node" data-element-id="8" data-node-id="8" data-label-name="tail_midpoint"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="46.70988845825195" cy="81.26327514648438" data-type="element node" data-element-id="9" data-node-id="9" data-label-name="tail_lower_midpont"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="46.757965087890625" cy="89.94447326660156" data-type="element node" data-element-id="10" data-node-id="10" data-label-name="tail_end"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="44.539588928222656" cy="13.149243354797363" data-type="element node" data-element-id="11" data-node-id="11" data-label-name="left_eye"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="49.38102722167969" cy="13.316189765930176" data-type="element node" data-element-id="12" data-node-id="12" data-label-name="right_eye"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="43.03707504272461" cy="18.324573516845703" data-type="element node" data-element-id="13" data-node-id="13" data-label-name="left_ear_base"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="51.38438034057617" cy="18.324573516845703" data-type="element node" data-element-id="14" data-node-id="14" data-label-name="right_ear_base"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="39.86509704589844" cy="22.164335250854492" data-type="element node" data-element-id="15" data-node-id="15" data-label-name="left_ear_tip"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="54.556358337402344" cy="21.496551513671875" data-type="element node" data-element-id="16" data-node-id="16" data-label-name="right_ear_tip"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="62.06893539428711" cy="35.35308074951172" data-type="element node" data-element-id="17" data-node-id="17" data-label-name="front_right_elbow"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="71.41792297363281" cy="26.504934310913086" data-type="element node" data-element-id="18" data-node-id="18" data-label-name="front_right_paw"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="35.19060516357422" cy="35.853919982910156" data-type="element node" data-element-id="19" data-node-id="19" data-label-name="front_left_elbow"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="26.175514221191406" cy="26.171043395996094" data-type="element node" data-element-id="20" data-node-id="20" data-label-name="front_left_paw"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="59.56474304199219" cy="56.054405212402344" data-type="element node" data-element-id="21" data-node-id="21" data-label-name="back_right_knee"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="70.08235168457031" cy="48.8757209777832" data-type="element node" data-element-id="22" data-node-id="22" data-label-name="back_right_wrist"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="74.75684356689453" cy="42.69871139526367" data-type="element node" data-element-id="23" data-node-id="23" data-label-name="back_right_paw"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="35.524497985839844" cy="56.3882942199707" data-type="element node" data-element-id="24" data-node-id="24" data-label-name="back_left_knee"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="26.843297958374023" cy="49.04266357421875" data-type="element node" data-element-id="25" data-node-id="25" data-label-name="back_left_wrist"&gt;&lt;/circle&gt;
+&lt;circle r="0.75" cx="23.003536224365234" cy="43.86733627319336" data-type="element node" data-element-id="26" data-node-id="26" data-label-name="back_left_paw"&gt;&lt;/circle&gt;</svg>
+        </label>
+        <label>
+          <name>nose</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>ears_midpoint</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>back_withers</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>back_midpoint</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>back_croup</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_base</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_upper_midpont</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_midpoint</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_lower_midpont</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>tail_end</name>
+          <color>#66ff66</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>left_eye</name>
+          <color>#33ddff</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>right_eye</name>
+          <color>#fa3253</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>left_ear_base</name>
+          <color>#33ddff</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>right_ear_base</name>
+          <color>#fa3253</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>left_ear_tip</name>
+          <color>#33ddff</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>right_ear_tip</name>
+          <color>#fa3253</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>front_right_elbow</name>
+          <color>#fa3253</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>front_right_paw</name>
+          <color>#fa3253</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>front_left_elbow</name>
+          <color>#33ddff</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>front_left_paw</name>
+          <color>#33ddff</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>back_right_knee</name>
+          <color>#fa3253</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>back_right_wrist</name>
+          <color>#fa3253</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>back_right_paw</name>
+          <color>#fa3253</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>back_left_knee</name>
+          <color>#33ddff</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>back_left_wrist</name>
+          <color>#33ddff</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>back_left_paw</name>
+          <color>#33ddff</color>
+          <type>points</type>
+          <attributes>
+          </attributes>
+          <parent>SideSkeleton</parent>
+        </label>
+        <label>
+          <name>Mouse</name>
+          <color>#2a7dd1</color>
+          <type>rectangle</type>
+          <attributes>
+          </attributes>
+        </label>
+      </labels>
+    </task>
+    <dumped>2025-04-04 14:17:47.879196+00:00</dumped>
+  </meta>
+  <image id="0" name="20241115-155653-374281_0-143.png" width="1920" height="1200">
+    <skeleton label="SideSkeleton" source="manual" z_order="0">
+      <points label="back_left_wrist" source="manual" outside="1" occluded="0" points="1228.00,356.22">
+      </points>
+      <points label="back_left_knee" source="manual" outside="1" occluded="0" points="1188.71,467.02">
+      </points>
+      <points label="back_right_paw" source="manual" outside="0" occluded="0" points="1114.41,678.18">
+      </points>
+      <points label="nose" source="manual" outside="0" occluded="0" points="1393.28,673.43">
+      </points>
+      <points label="back_withers" source="manual" outside="1" occluded="0" points="1261.89,625.17">
+      </points>
+      <points label="back_midpoint" source="manual" outside="0" occluded="0" points="1227.77,526.09">
+      </points>
+      <points label="back_croup" source="manual" outside="0" occluded="0" points="1161.04,538.87">
+      </points>
+      <points label="tail_base" source="manual" outside="0" occluded="0" points="1101.14,590.68">
+      </points>
+      <points label="tail_upper_midpont" source="manual" outside="0" occluded="0" points="1023.72,586.79">
+      </points>
+      <points label="tail_midpoint" source="manual" outside="0" occluded="0" points="967.80,590.39">
+      </points>
+      <points label="tail_lower_midpont" source="manual" outside="0" occluded="0" points="930.93,622.27">
+      </points>
+      <points label="tail_end" source="manual" outside="0" occluded="0" points="934.33,649.40">
+      </points>
+      <points label="ears_midpoint" source="manual" outside="0" occluded="0" points="1356.44,576.84">
+      </points>
+      <points label="left_eye" source="manual" outside="1" occluded="0" points="1307.55,604.80">
+      </points>
+      <points label="right_eye" source="manual" outside="0" occluded="0" points="1359.88,628.87">
+      </points>
+      <points label="right_ear_base" source="manual" outside="0" occluded="0" points="1328.03,577.33">
+      </points>
+      <points label="left_ear_tip" source="manual" outside="0" occluded="0" points="1358.61,545.04">
+      </points>
+      <points label="right_ear_tip" source="manual" outside="0" occluded="0" points="1319.84,539.63">
+      </points>
+      <points label="front_right_elbow" source="manual" outside="0" occluded="0" points="1290.88,638.36">
+      </points>
+      <points label="front_right_paw" source="manual" outside="1" occluded="0" points="1215.37,952.05">
+      </points>
+      <points label="front_left_elbow" source="manual" outside="1" occluded="0" points="1253.78,471.81">
+      </points>
+      <points label="front_left_paw" source="manual" outside="1" occluded="0" points="1301.03,357.66">
+      </points>
+      <points label="back_right_knee" source="manual" outside="1" occluded="0" points="1144.80,783.09">
+      </points>
+      <points label="back_right_wrist" source="manual" outside="0" occluded="0" points="1114.84,634.75">
+      </points>
+      <points label="left_ear_base" source="manual" outside="1" occluded="0" points="1294.12,582.75">
+      </points>
+      <points label="back_left_paw" source="manual" outside="0" occluded="0" points="1186.70,673.26">
+      </points>
+    </skeleton>
+    <box label="Mouse" source="manual" occluded="0" xtl="892.04" ytl="485.80" xbr="1426.93" ybr="723.21" z_order="0">
+    </box>
+  </image>
+  <image id="1" name="20241115-155653-374281_0-1444.png" width="1920" height="1200">
+    <box label="Mouse" source="manual" occluded="0" xtl="744.60" ytl="477.73" xbr="1331.63" ybr="745.57" z_order="0">
+    </box>
+    <skeleton label="SideSkeleton" source="manual" z_order="0">
+      <points label="tail_base" source="manual" outside="0" occluded="0" points="1051.10,648.09">
+      </points>
+      <points label="back_left_paw" source="manual" outside="0" occluded="0" points="892.69,681.39">
+      </points>
+      <points label="back_left_knee" source="manual" outside="1" occluded="0" points="1035.12,753.63">
+      </points>
+      <points label="back_right_paw" source="manual" outside="1" occluded="0" points="998.24,352.85">
+      </points>
+      <points label="back_right_wrist" source="manual" outside="1" occluded="0" points="1015.35,400.65">
+      </points>
+      <points label="back_right_knee" source="manual" outside="1" occluded="0" points="1035.04,508.12">
+      </points>
+      <points label="front_left_paw" source="manual" outside="1" occluded="0" points="950.29,848.80">
+      </points>
+      <points label="front_left_elbow" source="manual" outside="1" occluded="0" points="977.69,756.84">
+      </points>
+      <points label="front_right_paw" source="manual" outside="1" occluded="0" points="952.84,386.79">
+      </points>
+      <points label="front_right_elbow" source="manual" outside="1" occluded="0" points="977.25,482.35">
+      </points>
+      <points label="right_ear_tip" source="manual" outside="1" occluded="0" points="938.23,558.93">
+      </points>
+      <points label="left_ear_tip" source="manual" outside="0" occluded="0" points="844.17,510.74">
+      </points>
+      <points label="right_ear_base" source="manual" outside="1" occluded="0" points="929.25,591.29">
+      </points>
+      <points label="left_ear_base" source="manual" outside="0" occluded="0" points="840.28,558.08">
+      </points>
+      <points label="left_eye" source="manual" outside="0" occluded="0" points="818.16,589.87">
+      </points>
+      <points label="tail_end" source="manual" outside="0" occluded="0" points="1288.11,696.70">
+      </points>
+      <points label="tail_lower_midpont" source="manual" outside="0" occluded="0" points="1250.13,685.46">
+      </points>
+      <points label="tail_midpoint" source="manual" outside="0" occluded="0" points="1170.04,676.58">
+      </points>
+      <points label="tail_upper_midpont" source="manual" outside="0" occluded="0" points="1105.72,668.78">
+      </points>
+      <points label="back_croup" source="manual" outside="0" occluded="0" points="1039.54,569.43">
+      </points>
+      <points label="back_midpoint" source="manual" outside="0" occluded="0" points="972.65,508.74">
+      </points>
+      <points label="back_withers" source="manual" outside="0" occluded="0" points="874.78,527.68">
+      </points>
+      <points label="ears_midpoint" source="manual" outside="1" occluded="0" points="836.52,580.47">
+      </points>
+      <points label="nose" source="manual" outside="0" occluded="0" points="803.50,631.90">
+      </points>
+      <points label="right_eye" source="manual" outside="1" occluded="0" points="915.18,611.70">
+      </points>
+      <points label="back_left_wrist" source="manual" outside="0" occluded="0" points="936.21,664.40">
+      </points>
+    </skeleton>
+  </image>
+  <image id="2" name="20241115-155653-374281_0-1824.png" width="1920" height="1200">
+    <skeleton label="SideSkeleton" source="manual" z_order="0">
+      <points label="ears_midpoint" source="manual" outside="1" occluded="0" points="1215.01,552.83">
+      </points>
+      <points label="back_withers" source="manual" outside="0" occluded="0" points="1213.56,550.99">
+      </points>
+      <points label="back_midpoint" source="manual" outside="0" occluded="0" points="1095.98,520.87">
+      </points>
+      <points label="back_croup" source="manual" outside="0" occluded="0" points="1037.87,567.53">
+      </points>
+      <points label="tail_base" source="manual" outside="0" occluded="0" points="1012.91,635.66">
+      </points>
+      <points label="tail_upper_midpont" source="manual" outside="0" occluded="0" points="958.98,653.18">
+      </points>
+      <points label="tail_midpoint" source="manual" outside="0" occluded="0" points="901.82,665.38">
+      </points>
+      <points label="tail_lower_midpont" source="manual" outside="0" occluded="0" points="835.65,668.89">
+      </points>
+      <points label="tail_end" source="manual" outside="0" occluded="0" points="806.73,666.79">
+      </points>
+      <points label="left_eye" source="manual" outside="1" occluded="0" points="1079.14,568.75">
+      </points>
+      <points label="right_eye" source="manual" outside="1" occluded="0" points="1077.84,604.48">
+      </points>
+      <points label="left_ear_base" source="manual" outside="1" occluded="0" points="1068.13,557.37">
+      </points>
+      <points label="left_ear_tip" source="manual" outside="0" occluded="0" points="1211.41,533.74">
+      </points>
+      <points label="right_ear_base" source="manual" outside="1" occluded="0" points="1066.52,618.98">
+      </points>
+      <points label="right_ear_tip" source="manual" outside="0" occluded="0" points="1237.68,533.92">
+      </points>
+      <points label="front_right_elbow" source="manual" outside="1" occluded="0" points="1027.28,696.87">
+      </points>
+      <points label="front_right_paw" source="manual" outside="1" occluded="0" points="1044.79,766.38">
+      </points>
+      <points label="front_left_elbow" source="manual" outside="1" occluded="0" points="1031.38,498.45">
+      </points>
+      <points label="front_left_paw" source="manual" outside="1" occluded="0" points="1054.26,432.46">
+      </points>
+      <points label="back_right_knee" source="manual" outside="1" occluded="0" points="982.57,677.20">
+      </points>
+      <points label="back_right_wrist" source="manual" outside="1" occluded="0" points="996.21,755.24">
+      </points>
+      <points label="back_right_paw" source="manual" outside="1" occluded="0" points="1008.79,790.10">
+      </points>
+      <points label="back_left_knee" source="manual" outside="1" occluded="0" points="986.49,499.74">
+      </points>
+      <points label="back_left_wrist" source="manual" outside="1" occluded="0" points="1004.20,436.09">
+      </points>
+      <points label="back_left_paw" source="manual" outside="1" occluded="0" points="1016.24,408.04">
+      </points>
+      <points label="nose" source="manual" outside="1" occluded="0" points="1090.74,585.09">
+      </points>
+    </skeleton>
+    <box label="Mouse" source="manual" occluded="0" xtl="786.34" ytl="503.32" xbr="1267.70" ybr="703.99" z_order="0">
+    </box>
+  </image>
+  <image id="3" name="20241115-155653-374281_0-2404.png" width="1920" height="1200">
+    <skeleton label="SideSkeleton" source="manual" z_order="0">
+      <points label="right_ear_base" source="manual" outside="0" occluded="0" points="1338.43,543.79">
+      </points>
+      <points label="left_ear_tip" source="manual" outside="0" occluded="0" points="1376.59,487.02">
+      </points>
+      <points label="left_ear_base" source="manual" outside="1" occluded="0" points="1307.41,563.20">
+      </points>
+      <points label="right_eye" source="manual" outside="0" occluded="0" points="1399.77,559.23">
+      </points>
+      <points label="left_eye" source="manual" outside="1" occluded="0" points="1332.98,571.80">
+      </points>
+      <points label="tail_end" source="manual" outside="0" occluded="0" points="901.14,674.40">
+      </points>
+      <points label="tail_lower_midpont" source="manual" outside="0" occluded="0" points="976.78,671.63">
+      </points>
+      <points label="tail_midpoint" source="manual" outside="0" occluded="0" points="1083.04,648.67">
+      </points>
+      <points label="back_left_knee" source="manual" outside="1" occluded="0" points="1123.81,528.83">
+      </points>
+      <points label="tail_base" source="manual" outside="0" occluded="0" points="1197.14,618.24">
+      </points>
+      <points label="back_croup" source="manual" outside="0" occluded="0" points="1222.64,553.39">
+      </points>
+      <points label="back_midpoint" source="manual" outside="0" occluded="0" points="1264.99,511.06">
+      </points>
+      <points label="tail_upper_midpont" source="manual" outside="0" occluded="0" points="1157.00,632.53">
+      </points>
+      <points label="right_ear_tip" source="manual" outside="0" occluded="0" points="1326.73,510.08">
+      </points>
+      <points label="back_right_paw" source="manual" outside="1" occluded="0" points="1236.00,839.35">
+      </points>
+      <points label="back_right_wrist" source="manual" outside="1" occluded="0" points="1201.84,805.57">
+      </points>
+      <points label="back_right_knee" source="manual" outside="1" occluded="0" points="1155.71,724.81">
+      </points>
+      <points label="front_left_paw" source="manual" outside="0" occluded="0" points="1414.05,635.93">
+      </points>
+      <points label="front_left_elbow" source="manual" outside="1" occluded="0" points="1217.31,511.57">
+      </points>
+      <points label="front_right_paw" source="manual" outside="0" occluded="0" points="1364.33,688.42">
+      </points>
+      <points label="front_right_elbow" source="manual" outside="0" occluded="0" points="1334.28,613.34">
+      </points>
+      <points label="back_withers" source="manual" outside="1" occluded="0" points="1274.42,597.61">
+      </points>
+      <points label="ears_midpoint" source="manual" outside="0" occluded="0" points="1378.75,522.22">
+      </points>
+      <points label="nose" source="manual" outside="0" occluded="0" points="1436.41,587.62">
+      </points>
+      <points label="back_left_paw" source="manual" outside="0" occluded="0" points="1303.56,675.57">
+      </points>
+      <points label="back_left_wrist" source="manual" outside="1" occluded="0" points="1146.44,452.78">
+      </points>
+    </skeleton>
+    <box label="Mouse" source="manual" occluded="0" xtl="871.30" ytl="467.34" xbr="1470.82" ybr="733.53" z_order="0">
+    </box>
+  </image>
+  <image id="4" name="20241115-155653-374281_0-2552.png" width="1920" height="1200">
+    <skeleton label="SideSkeleton" source="manual" z_order="0">
+      <points label="tail_upper_midpont" source="manual" outside="0" occluded="0" points="1018.97,633.75">
+      </points>
+      <points label="back_right_paw" source="manual" outside="1" occluded="0" points="1341.41,820.93">
+      </points>
+      <points label="back_right_wrist" source="manual" outside="1" occluded="0" points="1315.03,781.04">
+      </points>
+      <points label="back_right_knee" source="manual" outside="0" occluded="0" points="1193.78,600.27">
+      </points>
+      <points label="front_left_paw" source="manual" outside="0" occluded="0" points="1288.53,680.12">
+      </points>
+      <points label="front_left_elbow" source="manual" outside="1" occluded="0" points="1307.00,454.07">
+      </points>
+      <points label="front_right_paw" source="manual" outside="0" occluded="0" points="1357.59,648.06">
+      </points>
+      <points label="front_right_elbow" source="manual" outside="0" occluded="0" points="1298.64,588.64">
+      </points>
+      <points label="right_ear_tip" source="manual" outside="0" occluded="0" points="1320.16,464.25">
+      </points>
+      <points label="left_ear_tip" source="manual" outside="1" occluded="0" points="1357.37,490.24">
+      </points>
+      <points label="right_ear_base" source="manual" outside="0" occluded="0" points="1341.12,511.63">
+      </points>
+      <points label="left_ear_base" source="manual" outside="1" occluded="0" points="1374.14,517.48">
+      </points>
+      <points label="right_eye" source="manual" outside="0" occluded="0" points="1375.92,511.90">
+      </points>
+      <points label="left_eye" source="manual" outside="0" occluded="0" points="1392.81,528.73">
+      </points>
+      <points label="tail_end" source="manual" outside="0" occluded="0" points="978.68,690.88">
+      </points>
+      <points label="tail_lower_midpont" source="manual" outside="0" occluded="0" points="954.69,672.69">
+      </points>
+      <points label="tail_midpoint" source="manual" outside="0" occluded="0" points="981.74,643.42">
+      </points>
+      <points label="tail_base" source="manual" outside="0" occluded="0" points="1078.40,615.30">
+      </points>
+      <points label="back_croup" source="manual" outside="0" occluded="0" points="1106.33,550.61">
+      </points>
+      <points label="back_midpoint" source="manual" outside="0" occluded="0" points="1175.21,490.42">
+      </points>
+      <points label="back_withers" source="manual" outside="0" occluded="0" points="1296.95,496.57">
+      </points>
+      <points label="ears_midpoint" source="manual" outside="1" occluded="0" points="1378.83,551.31">
+      </points>
+      <points label="nose" source="manual" outside="0" occluded="0" points="1409.42,527.99">
+      </points>
+      <points label="back_left_paw" source="manual" outside="1" occluded="0" points="1264.08,346.07">
+      </points>
+      <points label="back_left_wrist" source="manual" outside="1" occluded="0" points="1253.01,383.91">
+      </points>
+      <points label="back_left_knee" source="manual" outside="1" occluded="0" points="1241.89,467.29">
+      </points>
+    </skeleton>
+    <box label="Mouse" source="manual" occluded="0" xtl="908.56" ytl="440.95" xbr="1470.61" ybr="762.91" z_order="0">
+    </box>
+  </image>
+  <image id="5" name="20241115-155653-374281_0-2893.png" width="1920" height="1200">
+    <box label="Mouse" source="manual" occluded="0" xtl="964.70" ytl="256.67" xbr="1353.19" ybr="735.08" z_order="0">
+    </box>
+    <skeleton label="SideSkeleton" source="manual" z_order="0">
+      <points label="tail_lower_midpont" source="manual" outside="0" occluded="0" points="1261.37,647.53">
+      </points>
+      <points label="tail_end" source="manual" outside="0" occluded="0" points="1314.40,657.44">
+      </points>
+      <points label="left_eye" source="manual" outside="1" occluded="0" points="1030.12,301.14">
+      </points>
+      <points label="left_ear_tip" source="manual" outside="0" occluded="0" points="1024.36,314.08">
+      </points>
+      <points label="right_ear_tip" source="manual" outside="0" occluded="0" points="1082.76,313.31">
+      </points>
+      <points label="front_right_elbow" source="manual" outside="1" occluded="0" points="1185.43,406.60">
+      </points>
+      <points label="front_right_paw" source="manual" outside="1" occluded="0" points="1268.27,364.57">
+      </points>
+      <points label="front_left_elbow" source="manual" outside="1" occluded="0" points="947.28,408.98">
+      </points>
+      <points label="front_left_paw" source="manual" outside="1" occluded="0" points="867.41,362.99">
+      </points>
+      <points label="back_right_wrist" source="manual" outside="1" occluded="0" points="1256.43,470.82">
+      </points>
+      <points label="back_right_paw" source="manual" outside="0" occluded="0" points="1130.16,665.07">
+      </points>
+      <points label="back_left_knee" source="manual" outside="1" occluded="0" points="950.24,506.50">
+      </points>
+      <points label="back_left_wrist" source="manual" outside="0" occluded="0" points="1041.98,614.25">
+      </points>
+      <points label="back_left_paw" source="manual" outside="0" occluded="0" points="1024.82,669.66">
+      </points>
+      <points label="right_ear_base" source="manual" outside="1" occluded="0" points="1090.76,325.72">
+      </points>
+      <points label="left_ear_base" source="manual" outside="1" occluded="0" points="1016.81,325.72">
+      </points>
+      <points label="back_right_knee" source="manual" outside="1" occluded="0" points="1163.24,504.92">
+      </points>
+      <points label="nose" source="manual" outside="1" occluded="0" points="1049.35,274.98">
+      </points>
+      <points label="ears_midpoint" source="manual" outside="0" occluded="0" points="1049.35,326.52">
+      </points>
+      <points label="right_eye" source="manual" outside="1" occluded="0" points="1073.01,301.94">
+      </points>
+      <points label="back_withers" source="manual" outside="0" occluded="0" points="1050.28,352.05">
+      </points>
+      <points label="back_midpoint" source="manual" outside="0" occluded="0" points="1056.90,451.21">
+      </points>
+      <points label="back_croup" source="manual" outside="0" occluded="0" points="1075.28,534.72">
+      </points>
+      <points label="tail_base" source="manual" outside="0" occluded="0" points="1083.81,577.14">
+      </points>
+      <points label="tail_upper_midpont" source="manual" outside="0" occluded="0" points="1110.92,610.74">
+      </points>
+      <points label="tail_midpoint" source="manual" outside="0" occluded="0" points="1171.82,632.41">
+      </points>
+    </skeleton>
+  </image>
+  <image id="6" name="20241115-155653-374281_0-3025.png" width="1920" height="1200">
+    <box label="Mouse" source="manual" occluded="0" xtl="795.11" ytl="368.49" xbr="1341.87" ybr="729.64" z_order="0">
+    </box>
+    <skeleton label="SideSkeleton" source="manual" z_order="0">
+      <points label="back_croup" source="manual" outside="0" occluded="0" points="1071.87,577.91">
+      </points>
+      <points label="tail_base" source="manual" outside="0" occluded="0" points="1074.44,661.08">
+      </points>
+      <points label="tail_upper_midpont" source="manual" outside="0" occluded="0" points="1123.14,676.97">
+      </points>
+      <points label="tail_midpoint" source="manual" outside="0" occluded="0" points="1186.47,678.60">
+      </points>
+      <points label="tail_lower_midpont" source="manual" outside="0" occluded="0" points="1252.35,678.77">
+      </points>
+      <points label="tail_end" source="manual" outside="0" occluded="0" points="1304.95,673.27">
+      </points>
+      <points label="left_eye" source="manual" outside="0" occluded="0" points="855.37,412.76">
+      </points>
+      <points label="right_eye" source="manual" outside="1" occluded="0" points="957.97,540.77">
+      </points>
+      <points label="left_ear_base" source="manual" outside="0" occluded="0" points="889.91,424.68">
+      </points>
+      <points label="right_ear_base" source="manual" outside="1" occluded="0" points="987.24,523.67">
+      </points>
+      <points label="left_ear_tip" source="manual" outside="0" occluded="0" points="920.91,401.19">
+      </points>
+      <points label="right_ear_tip" source="manual" outside="1" occluded="0" points="1014.79,489.37">
+      </points>
+      <points label="front_right_elbow" source="manual" outside="1" occluded="0" points="1105.09,417.76">
+      </points>
+      <points label="front_right_paw" source="manual" outside="1" occluded="0" points="1114.38,289.07">
+      </points>
+      <points label="front_left_elbow" source="manual" outside="0" occluded="0" points="906.43,515.15">
+      </points>
+      <points label="front_left_paw" source="manual" outside="0" occluded="0" points="857.31,571.60">
+      </points>
+      <points label="back_right_knee" source="manual" outside="1" occluded="0" points="1175.03,480.03">
+      </points>
+      <points label="back_right_wrist" source="manual" outside="1" occluded="0" points="1196.45,339.47">
+      </points>
+      <points label="back_right_paw" source="manual" outside="1" occluded="0" points="1194.17,272.47">
+      </points>
+      <points label="back_left_knee" source="manual" outside="1" occluded="0" points="1062.58,776.94">
+      </points>
+      <points label="back_left_wrist" source="manual" outside="1" occluded="0" points="992.47,872.83">
+      </points>
+      <points label="back_left_paw" source="manual" outside="1" occluded="0" points="953.85,912.32">
+      </points>
+      <points label="back_withers" source="manual" outside="0" occluded="0" points="924.85,435.30">
+      </points>
+      <points label="back_midpoint" source="manual" outside="0" occluded="0" points="1035.03,504.42">
+      </points>
+      <points label="ears_midpoint" source="manual" outside="1" occluded="0" points="965.78,581.55">
+      </points>
+      <points label="nose" source="manual" outside="0" occluded="0" points="817.09,404.92">
+      </points>
+    </skeleton>
+  </image>
+  <image id="7" name="20241115-155653-374281_0-3493.png" width="1920" height="1200">
+    <skeleton label="SideSkeleton" source="manual" z_order="0">
+      <points label="right_ear_tip" source="manual" outside="0" occluded="0" points="1239.61,467.56">
+      </points>
+      <points label="front_right_elbow" source="manual" outside="0" occluded="0" points="1244.51,600.78">
+      </points>
+      <points label="front_right_paw" source="manual" outside="0" occluded="0" points="1268.47,686.44">
+      </points>
+      <points label="front_left_elbow" source="manual" outside="1" occluded="0" points="1202.81,399.09">
+      </points>
+      <points label="front_left_paw" source="manual" outside="0" occluded="0" points="1322.88,637.19">
+      </points>
+      <points label="back_right_knee" source="manual" outside="1" occluded="0" points="1106.10,722.29">
+      </points>
+      <points label="back_right_wrist" source="manual" outside="1" occluded="0" points="1150.54,858.30">
+      </points>
+      <points label="back_right_paw" source="manual" outside="1" occluded="0" points="1186.49,918.09">
+      </points>
+      <points label="back_left_wrist" source="manual" outside="1" occluded="0" points="1126.92,292.78">
+      </points>
+      <points label="back_left_paw" source="manual" outside="1" occluded="0" points="1152.96,241.44">
+      </points>
+      <points label="back_left_knee" source="manual" outside="1" occluded="0" points="1091.66,407.93">
+      </points>
+      <points label="nose" source="manual" outside="0" occluded="0" points="1361.81,543.62">
+      </points>
+      <points label="ears_midpoint" source="manual" outside="1" occluded="0" points="1302.98,545.98">
+      </points>
+      <points label="back_withers" source="manual" outside="0" occluded="0" points="1231.34,494.01">
+      </points>
+      <points label="back_midpoint" source="manual" outside="0" occluded="0" points="1121.77,506.08">
+      </points>
+      <points label="back_croup" source="manual" outside="0" occluded="0" points="1077.37,560.31">
+      </points>
+      <points label="tail_base" source="manual" outside="0" occluded="0" points="1052.19,636.77">
+      </points>
+      <points label="tail_upper_midpont" source="manual" outside="0" occluded="0" points="1005.72,650.93">
+      </points>
+      <points label="tail_midpoint" source="manual" outside="0" occluded="0" points="951.23,662.12">
+      </points>
+      <points label="tail_lower_midpont" source="manual" outside="0" occluded="0" points="885.59,669.67">
+      </points>
+      <points label="tail_end" source="manual" outside="0" occluded="0" points="838.96,669.78">
+      </points>
+      <points label="left_eye" source="manual" outside="1" occluded="0" points="1330.80,516.43">
+      </points>
+      <points label="right_eye" source="manual" outside="0" occluded="0" points="1312.36,523.57">
+      </points>
+      <points label="left_ear_base" source="manual" outside="1" occluded="0" points="1301.96,497.90">
+      </points>
+      <points label="right_ear_base" source="manual" outside="0" occluded="0" points="1260.50,502.68">
+      </points>
+      <points label="left_ear_tip" source="manual" outside="0" occluded="0" points="1276.46,466.29">
+      </points>
+    </skeleton>
+    <box label="Mouse" source="manual" occluded="0" xtl="787.02" ytl="446.60" xbr="1387.64" ybr="714.40" z_order="0">
+    </box>
+  </image>
+  <image id="8" name="20241115-155653-374281_0-4069.png" width="1920" height="1200">
+    <box label="Mouse" source="manual" occluded="0" xtl="678.92" ytl="437.04" xbr="1327.57" ybr="758.44" z_order="0">
+    </box>
+    <skeleton label="SideSkeleton" source="manual" z_order="0">
+      <points label="tail_lower_midpont" source="manual" outside="0" occluded="0" points="727.68,679.89">
+      </points>
+      <points label="nose" source="manual" outside="0" occluded="0" points="1316.77,708.99">
+      </points>
+      <points label="ears_midpoint" source="manual" outside="1" occluded="0" points="1259.22,684.54">
+      </points>
+      <points label="back_withers" source="manual" outside="0" occluded="0" points="1196.57,536.72">
+      </points>
+      <points label="back_midpoint" source="manual" outside="0" occluded="0" points="1047.62,470.98">
+      </points>
+      <points label="back_croup" source="manual" outside="0" occluded="0" points="921.61,529.03">
+      </points>
+      <points label="tail_base" source="manual" outside="0" occluded="0" points="886.92,629.48">
+      </points>
+      <points label="tail_upper_midpont" source="manual" outside="0" occluded="0" points="841.14,653.43">
+      </points>
+      <points label="back_left_paw" source="manual" outside="1" occluded="0" points="1278.09,444.14">
+      </points>
+      <points label="back_left_wrist" source="manual" outside="1" occluded="0" points="1243.11,465.46">
+      </points>
+      <points label="back_left_knee" source="manual" outside="1" occluded="0" points="1147.77,580.31">
+      </points>
+      <points label="back_right_paw" source="manual" outside="0" occluded="0" points="932.87,707.97">
+      </points>
+      <points label="back_right_wrist" source="manual" outside="0" occluded="0" points="907.98,669.43">
+      </points>
+      <points label="back_right_knee" source="manual" outside="1" occluded="0" points="909.66,669.30">
+      </points>
+      <points label="front_left_paw" source="manual" outside="1" occluded="0" points="1324.74,503.45">
+      </points>
+      <points label="front_left_elbow" source="manual" outside="1" occluded="0" points="1251.09,558.18">
+      </points>
+      <points label="front_right_paw" source="manual" outside="1" occluded="0" points="1121.07,869.69">
+      </points>
+      <points label="front_right_elbow" source="manual" outside="1" occluded="0" points="1164.97,752.10">
+      </points>
+      <points label="right_ear_tip" source="manual" outside="0" occluded="0" points="1212.96,514.38">
+      </points>
+      <points label="left_ear_tip" source="manual" outside="1" occluded="0" points="1277.24,622.07">
+      </points>
+      <points label="right_ear_base" source="manual" outside="0" occluded="0" points="1232.45,574.19">
+      </points>
+      <points label="left_ear_base" source="manual" outside="1" occluded="0" points="1276.24,655.08">
+      </points>
+      <points label="right_eye" source="manual" outside="0" occluded="0" points="1280.68,643.24">
+      </points>
+      <points label="left_eye" source="manual" outside="1" occluded="0" points="1287.31,677.08">
+      </points>
+      <points label="tail_end" source="manual" outside="1" occluded="0" points="646.96,749.85">
+      </points>
+      <points label="tail_midpoint" source="manual" outside="0" occluded="0" points="778.23,677.95">
+      </points>
+    </skeleton>
+  </image>
+  <image id="9" name="20241115-155653-374281_0-4362.png" width="1920" height="1200">
+    <skeleton label="SideSkeleton" source="manual" z_order="0">
+      <points label="tail_base" source="manual" outside="0" occluded="0" points="1026.15,646.47">
+      </points>
+      <points label="tail_midpoint" source="manual" outside="0" occluded="0" points="1180.21,672.45">
+      </points>
+      <points label="back_left_paw" source="manual" outside="1" occluded="0" points="1014.59,842.48">
+      </points>
+      <points label="back_left_wrist" source="manual" outside="1" occluded="0" points="1024.43,805.95">
+      </points>
+      <points label="back_left_knee" source="manual" outside="1" occluded="0" points="1037.07,723.76">
+      </points>
+      <points label="back_right_paw" source="manual" outside="1" occluded="0" points="990.81,356.86">
+      </points>
+      <points label="back_right_wrist" source="manual" outside="1" occluded="0" points="1006.34,400.13">
+      </points>
+      <points label="back_right_knee" source="manual" outside="1" occluded="0" points="1026.48,498.16">
+      </points>
+      <points label="front_left_paw" source="manual" outside="0" occluded="0" points="803.69,665.23">
+      </points>
+      <points label="front_left_elbow" source="manual" outside="0" occluded="0" points="833.49,606.28">
+      </points>
+      <points label="front_right_paw" source="manual" outside="1" occluded="0" points="956.47,389.75">
+      </points>
+      <points label="front_right_elbow" source="manual" outside="1" occluded="0" points="979.81,476.65">
+      </points>
+      <points label="right_ear_tip" source="manual" outside="1" occluded="0" points="952.33,548.49">
+      </points>
+      <points label="left_ear_tip" source="manual" outside="0" occluded="0" points="841.81,489.06">
+      </points>
+      <points label="right_ear_base" source="manual" outside="1" occluded="0" points="946.64,578.57">
+      </points>
+      <points label="left_ear_base" source="manual" outside="0" occluded="0" points="820.35,530.02">
+      </points>
+      <points label="right_eye" source="manual" outside="1" occluded="0" points="936.41,597.85">
+      </points>
+      <points label="left_eye" source="manual" outside="0" occluded="0" points="784.66,547.94">
+      </points>
+      <points label="tail_end" source="manual" outside="0" occluded="0" points="1297.64,685.75">
+      </points>
+      <points label="tail_lower_midpont" source="manual" outside="0" occluded="0" points="1231.23,678.01">
+      </points>
+      <points label="tail_upper_midpont" source="manual" outside="0" occluded="0" points="1092.85,662.72">
+      </points>
+      <points label="back_croup" source="manual" outside="0" occluded="0" points="1010.67,573.76">
+      </points>
+      <points label="back_midpoint" source="manual" outside="0" occluded="0" points="960.84,511.89">
+      </points>
+      <points label="back_withers" source="manual" outside="0" occluded="0" points="848.14,510.84">
+      </points>
+      <points label="ears_midpoint" source="manual" outside="1" occluded="0" points="948.92,622.43">
+      </points>
+      <points label="nose" source="manual" outside="0" occluded="0" points="753.21,567.42">
+      </points>
+    </skeleton>
+    <box label="Mouse" source="manual" occluded="0" xtl="689.67" ytl="444.95" xbr="1329.99" ybr="729.72" z_order="0">
+    </box>
+  </image>
+  <image id="10" name="20241115-155653-374281_0-4403.png" width="1920" height="1200">
+    <skeleton label="SideSkeleton" source="manual" z_order="0">
+      <points label="back_midpoint" source="manual" outside="1" occluded="0" points="819.27,890.07">
+      </points>
+      <points label="tail_upper_midpont" source="manual" outside="1" occluded="0" points="824.06,1127.48">
+      </points>
+      <points label="tail_base" source="manual" outside="1" occluded="0" points="824.06,1044.03">
+      </points>
+      <points label="back_croup" source="manual" outside="1" occluded="0" points="824.06,963.45">
+      </points>
+      <points label="tail_midpoint" source="manual" outside="1" occluded="0" points="824.06,1205.18">
+      </points>
+      <points label="tail_lower_midpont" source="manual" outside="1" occluded="0" points="824.06,1281.44">
+      </points>
+      <points label="tail_end" source="manual" outside="1" occluded="0" points="825.44,1356.26">
+      </points>
+      <points label="left_eye" source="manual" outside="0" occluded="0" points="768.73,421.69">
+      </points>
+      <points label="right_eye" source="manual" outside="1" occluded="0" points="900.70,695.83">
+      </points>
+      <points label="back_left_paw" source="manual" outside="0" occluded="0" points="855.50,696.29">
+      </points>
+      <points label="back_left_wrist" source="manual" outside="1" occluded="0" points="254.05,1003.74">
+      </points>
+      <points label="back_left_knee" source="manual" outside="1" occluded="0" points="503.13,1067.05">
+      </points>
+      <points label="back_right_paw" source="manual" outside="0" occluded="0" points="724.12,685.74">
+      </points>
+      <points label="back_right_wrist" source="manual" outside="1" occluded="0" points="1494.66,1002.30">
+      </points>
+      <points label="back_right_knee" source="manual" outside="1" occluded="0" points="1192.89,1064.17">
+      </points>
+      <points label="front_left_paw" source="manual" outside="0" occluded="0" points="799.44,697.71">
+      </points>
+      <points label="front_left_elbow" source="manual" outside="0" occluded="0" points="830.28,527.36">
+      </points>
+      <points label="front_right_paw" source="manual" outside="0" occluded="0" points="688.85,538.51">
+      </points>
+      <points label="front_right_elbow" source="manual" outside="1" occluded="0" points="1264.74,885.76">
+      </points>
+      <points label="right_ear_tip" source="manual" outside="1" occluded="0" points="1049.19,766.33">
+      </points>
+      <points label="left_ear_tip" source="manual" outside="0" occluded="0" points="861.51,432.77">
+      </points>
+      <points label="right_ear_base" source="manual" outside="1" occluded="0" points="958.18,738.99">
+      </points>
+      <points label="left_ear_base" source="manual" outside="0" occluded="0" points="826.23,441.31">
+      </points>
+      <points label="nose" source="manual" outside="0" occluded="0" points="690.83,403.35">
+      </points>
+      <points label="ears_midpoint" source="manual" outside="1" occluded="0" points="824.06,740.43">
+      </points>
+      <points label="back_withers" source="manual" outside="1" occluded="0" points="819.27,809.50">
+      </points>
+    </skeleton>
+    <box label="Mouse" source="manual" occluded="0" xtl="657.75" ytl="325.49" xbr="910.74" ybr="737.96" z_order="0">
+    </box>
+  </image>
+  <image id="11" name="20241115-155653-374281_0-5091.png" width="1920" height="1200">
+    <skeleton label="SideSkeleton" source="manual" z_order="0">
+      <points label="back_withers" source="manual" outside="1" occluded="0" points="1246.80,329.66">
+      </points>
+      <points label="tail_midpoint" source="manual" outside="0" occluded="0" points="1157.39,657.47">
+      </points>
+      <points label="tail_lower_midpont" source="manual" outside="0" occluded="0" points="1100.37,671.33">
+      </points>
+      <points label="tail_end" source="manual" outside="0" occluded="0" points="1048.43,669.19">
+      </points>
+      <points label="left_eye" source="manual" outside="1" occluded="0" points="1220.67,202.60">
+      </points>
+      <points label="right_eye" source="manual" outside="1" occluded="0" points="1283.82,204.19">
+      </points>
+      <points label="left_ear_base" source="manual" outside="1" occluded="0" points="1201.07,251.84">
+      </points>
+      <points label="right_ear_base" source="manual" outside="1" occluded="0" points="1309.95,251.84">
+      </points>
+      <points label="left_ear_tip" source="manual" outside="1" occluded="0" points="1159.70,288.36">
+      </points>
+      <points label="right_ear_tip" source="manual" outside="0" occluded="0" points="1221.44,257.03">
+      </points>
+      <points label="front_right_elbow" source="manual" outside="1" occluded="0" points="1449.32,413.83">
+      </points>
+      <points label="front_right_paw" source="manual" outside="0" occluded="0" points="1376.42,309.67">
+      </points>
+      <points label="front_left_elbow" source="manual" outside="1" occluded="0" points="1101.72,418.59">
+      </points>
+      <points label="front_left_paw" source="manual" outside="0" occluded="0" points="1447.76,306.50">
+      </points>
+      <points label="back_right_knee" source="manual" outside="1" occluded="0" points="1416.66,610.76">
+      </points>
+      <points label="back_right_wrist" source="manual" outside="0" occluded="0" points="1268.66,641.70">
+      </points>
+      <points label="back_right_paw" source="manual" outside="0" occluded="0" points="1288.47,690.49">
+      </points>
+      <points label="back_left_knee" source="manual" outside="1" occluded="0" points="1103.08,613.94">
+      </points>
+      <points label="back_left_wrist" source="manual" outside="0" occluded="0" points="1340.95,612.06">
+      </points>
+      <points label="back_left_paw" source="manual" outside="0" occluded="0" points="1390.09,644.71">
+      </points>
+      <points label="back_midpoint" source="manual" outside="0" occluded="0" points="1259.53,431.89">
+      </points>
+      <points label="ears_midpoint" source="manual" outside="1" occluded="0" points="1248.98,253.42">
+      </points>
+      <points label="nose" source="manual" outside="0" occluded="0" points="1329.75,190.99">
+      </points>
+      <points label="back_croup" source="manual" outside="0" occluded="0" points="1244.36,508.84">
+      </points>
+      <points label="tail_base" source="manual" outside="0" occluded="0" points="1246.67,608.19">
+      </points>
+      <points label="tail_upper_midpont" source="manual" outside="0" occluded="0" points="1201.80,634.85">
+      </points>
+    </skeleton>
+    <box label="Mouse" source="manual" occluded="0" xtl="994.24" ytl="145.90" xbr="1496.55" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="12" name="20241115-155653-374281_0-5112.png" width="1920" height="1200">
+    <box label="Mouse" source="manual" occluded="0" xtl="1031.77" ytl="384.81" xbr="1373.64" ybr="737.04" z_order="0">
+    </box>
+    <skeleton label="SideSkeleton" source="manual" z_order="0">
+      <points label="tail_end" source="manual" outside="1" occluded="0" points="1374.14,323.02">
+      </points>
+      <points label="front_left_paw" source="manual" outside="0" occluded="0" points="1216.67,706.64">
+      </points>
+      <points label="back_right_knee" source="manual" outside="1" occluded="0" points="1163.73,343.27">
+      </points>
+      <points label="back_right_wrist" source="manual" outside="1" occluded="0" points="1067.01,290.44">
+      </points>
+      <points label="back_croup" source="manual" outside="1" occluded="0" points="1206.60,476.65">
+      </points>
+      <points label="back_midpoint" source="manual" outside="0" occluded="0" points="1312.24,544.58">
+      </points>
+      <points label="back_withers" source="manual" outside="1" occluded="0" points="1141.92,537.95">
+      </points>
+      <points label="ears_midpoint" source="manual" outside="0" occluded="0" points="1134.98,484.98">
+      </points>
+      <points label="nose" source="manual" outside="0" occluded="0" points="1063.80,544.68">
+      </points>
+      <points label="tail_upper_midpont" source="manual" outside="1" occluded="0" points="1276.70,412.65">
+      </points>
+      <points label="right_eye" source="manual" outside="1" occluded="0" points="1074.38,561.54">
+      </points>
+      <points label="left_eye" source="manual" outside="0" occluded="0" points="1127.80,514.41">
+      </points>
+      <points label="tail_base" source="manual" outside="1" occluded="0" points="1241.03,445.21">
+      </points>
+      <points label="back_left_paw" source="manual" outside="0" occluded="0" points="1315.77,694.63">
+      </points>
+      <points label="back_left_wrist" source="manual" outside="1" occluded="0" points="1356.59,606.33">
+      </points>
+      <points label="back_right_paw" source="manual" outside="1" occluded="0" points="1013.02,277.00">
+      </points>
+      <points label="back_left_knee" source="manual" outside="1" occluded="0" points="1325.62,518.09">
+      </points>
+      <points label="front_left_elbow" source="manual" outside="0" occluded="0" points="1233.05,597.40">
+      </points>
+      <points label="front_right_paw" source="manual" outside="1" occluded="0" points="975.69,355.90">
+      </points>
+      <points label="left_ear_base" source="manual" outside="0" occluded="0" points="1184.62,486.72">
+      </points>
+      <points label="right_ear_base" source="manual" outside="1" occluded="0" points="1079.44,530.03">
+      </points>
+      <points label="left_ear_tip" source="manual" outside="0" occluded="0" points="1192.65,440.00">
+      </points>
+      <points label="front_right_elbow" source="manual" outside="1" occluded="0" points="1070.75,394.56">
+      </points>
+      <points label="right_ear_tip" source="manual" outside="0" occluded="0" points="1106.35,450.47">
+      </points>
+      <points label="tail_midpoint" source="manual" outside="1" occluded="0" points="1309.90,382.33">
+      </points>
+      <points label="tail_lower_midpont" source="manual" outside="1" occluded="0" points="1342.49,352.57">
+      </points>
+    </skeleton>
+  </image>
+</annotations>
