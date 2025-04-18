@@ -2,6 +2,10 @@ import sys
 import pandas as pd
 import os
 
+"""
+    Usage: python merge_csv.py file1.csv file2.csv ...
+"""
+
 def check_column_consistency(file_list):
     column_sets = {}
     

@@ -1,8 +1,9 @@
 # bnl-ai
 Tools and AI software for the Behavioural Neuroscience Laboratory.
 
-![animation_test_set](https://github.com/user-attachments/assets/f7d27515-8798-4224-8f11-4c47ad2c923c)
+![test_images_epoch_12 (1)](https://github.com/user-attachments/assets/feb6353b-e7e6-487e-867e-6eefedbf4fde)
 
+![5](https://github.com/user-attachments/assets/ac0899a4-5817-4e2c-9f6d-9e906e17b817)
 
 ## Fix MKV files
 Usually the recordings are corrupted. The timestaps are *not monotonically increasing*. This causes errors in the

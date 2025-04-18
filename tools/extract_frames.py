@@ -362,17 +362,20 @@ def uniform_extraction(video_paths, output_dir, n_frames, random = True):
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
 
-    print("Counting total frames...")
     cap = cv2.VideoCapture(video_paths[0])
-    total_frames = 0
-    while True:
-        if total_frames % 30 == 0:
-            print(f"total_frames: {total_frames}", end="\r", flush=True)
-        ret, frame = cap.read()
-        if not ret:
-            break
-        total_frames += 1
-    cap.release()
+
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    if total_frames < 0:
+        print("Counting total frames...")
+        total_frames = 0
+        while True:
+            if total_frames % 30 == 0:
+                print(f"total_frames: {total_frames}", end="\r", flush=True)
+            ret, frame = cap.read()
+            if not ret:
+                break
+            total_frames += 1
+        cap.release()
 
     # Uniformly sample `n_frames` frame indices
     if random:
@@ -394,16 +397,25 @@ def uniform_extraction(video_paths, output_dir, n_frames, random = True):
         frames_folder = os.path.join(output_dir, root_name)
         if not os.path.exists(frames_folder):
             os.mkdir(frames_folder)
-        while True:
-            ret, frame = cap.read()
-            if not ret:
-                break
-            if i in frame_indices:
+        if total_frames < 0:
+            while True:
+                ret, frame = cap.read()
+                if not ret:
+                    break
+                if i in frame_indices:
+                    print(f"frames: {i}", end="\r", flush=True)
+                    output_path = os.path.join(frames_folder, f"{root_name}-{i}.png")
+                    cv2.imwrite(output_path, frame)
+                i += 1
+                cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+            cap.release()
+        else:
+            for i in frame_indices:
+                cap.set(cv2.CAP_PROP_POS_FRAMES, i)
+                ret, frame = cap.read()
                 print(f"frames: {i}", end="\r", flush=True)
                 output_path = os.path.join(frames_folder, f"{root_name}-{i}.png")
                 cv2.imwrite(output_path, frame)
-            i += 1
-        cap.release()
         j += 1
 
 def linear_extraction(video_path, output_folder, interval : float = 1000):

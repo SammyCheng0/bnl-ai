@@ -12,6 +12,7 @@ import matplotlib.colors as mcolors
 import math
 import cv2
 import numpy as np
+from PIL import ImageChops
 
 def calculate_padding(original_width, original_height, target_width, target_height):
     original_aspect_ratio = original_width / original_height
@@ -58,7 +59,7 @@ class TopViewDataset(Dataset):
         return len(self.filenames)
 
     def __getitem__(self, idx):
-        
+
         # ------- steps --------
         # Crop image around mouse
         # rotate with extension = True
@@ -72,7 +73,7 @@ class TopViewDataset(Dataset):
         keypoints = []
         original_image = [] 
         not_normalized_image = []
-         
+
         img_name = self.filenames[idx]
         img_path = os.path.join(self.image_folder, img_name)
         transformed_image = Image.open(img_path).convert("RGB")
@@ -126,6 +127,8 @@ class TopViewDataset(Dataset):
             crop_width, crop_height = transformed_image.size
             angle_rad = math.radians(angle)
             transformed_image = F.rotate(transformed_image, angle, expand=True)
+            # plt.plot(transformed_image)
+            # plt.show()
             if not self.infer:
                 # Rotate keypoints
                 center_x, center_y = transformed_image.size[0] / 2, transformed_image.size[1] / 2
@@ -136,20 +139,47 @@ class TopViewDataset(Dataset):
                 keypoints += torch.tensor([(transformed_image.size[0] - crop_width) / 2, (transformed_image.size[1] - crop_height) / 2])  # Adjust for padding
                 keypoints -= torch.tensor([center_x, center_y])
                 keypoints = torch.mm(keypoints, rotation_matrix.T) + torch.tensor([center_x, center_y])
-        
+
         # ----------------------------------
         # --- Add padding and resize -------
         # ----------------------------------
 
+        # Percentage of scaling of the cropped mouse photo
+        scale_size = round(random.uniform(0.9 , 1.2), 1)
+        print("scale: ", scale_size)
+
+        image_width, image_length = transformed_image.size
+        print("old: ", transformed_image.size)
+        transformed_width = round(image_width*scale_size, 0)
+        transformed_length = round(image_length*scale_size, 0)
+        print("new: ", transformed_width, transformed_length)
+
         # Calculate padding to match the aspect ratio
         padding_width, padding_height = calculate_padding(*transformed_image.size, *self.output_size)
-        # print(f"padding width: {padding_width}, padding height: {padding_height}")
+        print("padding old", padding_width, padding_height)
+
+        # resizing the mouse photo with the scale
+        transformed_image = transformed_image.resize((int(transformed_width), int(transformed_length)))
+        print("resized: ",transformed_image.size)
+
+        if not self.infer:
+            # Resize keypoints
+            keypoints[::2] *= scale_size  # Scale x-coordinates
+            keypoints[1::2] *= scale_size  # Scale y-coordinates
+            padding_width_hm  = int( padding_width * scale_size)
+            padding_height_hm = int( padding_height * scale_size)
+        
+        padding_width_old, padding_height_old = calculate_padding(*transformed_image.size, *self.output_size)
+        print("padding new: ", padding_width_old, padding_height_old)
+
+
         transformed_image = Pad(padding=(padding_width, padding_height), fill=0, padding_mode='constant')(transformed_image)
         if not self.infer:
             # Add padding to keypoints
             keypoints += torch.tensor([padding_width, padding_height])  # Adjust for padding
             keypoints = keypoints.view(-1)
-        # Resize image to output size
+
+
         scale_x = self.output_size[1] / transformed_image.size[0]
         scale_y = self.output_size[0] / transformed_image.size[1]
         transformed_image = F.resize(transformed_image, self.output_size)
@@ -162,7 +192,7 @@ class TopViewDataset(Dataset):
 
         if self.debug:
             not_normalized_image = np.array(transformed_image.copy())
-            # # add keypoints to not_normalized_image
+            # add keypoints to not_normalized_image
             # for i in range(0, len(keypoints), 2):
             #     x = int(keypoints[i].item())
             #     y = int(keypoints[i+1].item())
@@ -171,15 +201,191 @@ class TopViewDataset(Dataset):
 
         # Normalize image
         transformed_image = F.to_tensor(transformed_image)
-        transformed_image = F.normalize(transformed_image, mean=[0.5] * 3, std=[0.5] * 3)
 
-        # print(f'transformed_image size: {transformed_image.size()}')
-        # print(f'transformed_image aspect ratio: {transformed_image.size(1) / transformed_image.size(2)}')
-        # print(f'output aspect ratio: {self.output_size[0] / self.output_size[1]}')
-        # print(f'mean: {transformed_image.mean()}')
-        # print(f'std: {transformed_image.std()}')
-        # print(f'min: {transformed_image.min()}')
-        # print(f'max: {transformed_image.max()}')
+        def get_motion_blur_kernel(x, y, thickness=5, ksize=21):
+            """ Obtains Motion Blur Kernel
+                Inputs:
+                    x - horizontal direction of blur
+                    y - vertical direction of blur
+                    thickness - thickness of blur kernel line
+                    ksize - size of blur kernel
+                Outputs:
+                    blur_kernel
+                """
+            blur_kernel = np.zeros((ksize, ksize))
+            c = int(ksize/2)
+
+            # blur_kernel = np.zeros((ksize, ksize))
+            # blur_kernel = cv2.line(blur_kernel, (c+x,c+y), (c,c), (255,), thickness)
+
+            blur_kernel[c, :] = 255  # fill a horizontal line at the center row with ones
+
+            # You can adjust the thickness if you want the blur line to be thicker.
+            # If you want a more complex blur pattern, you can add additional lines.
+            blur_kernel /= ksize 
+            return blur_kernel
+        
+        # # make blur kernel and apply it
+        # image_width, image_length = transformed_image.size
+        # blur_kernel = get_motion_blur_kernel(x=image_width, y=image_length, thickness=1, ksize=31)
+        # transformed_image = cv2.filter2D(transformed_image, ddepth=-1, kernel=blur_kernel)
+
+        # Example: Convert image to NumPy array if it's a PIL Image
+        transformed_image = np.array(transformed_image)
+
+        # Make blur kernel and apply it
+        image_width, image_length = transformed_image.shape[1], transformed_image.shape[0]  # Use shape for NumPy arrays
+        blur_kernel = get_motion_blur_kernel(x=0, y=0, thickness=1, ksize=5)  # You can adjust x and y to control the direction
+
+        # Apply motion blur using filter2D
+        transformed_image = cv2.filter2D(transformed_image, ddepth=-1, kernel=blur_kernel)
+
+        # If you need to convert back to a tensor, do it after processing
+        transformed_image = torch.from_numpy(transformed_image).float() / 255.0
+
+        mean_image = transformed_image.mean(dim=[1, 2])  # Mean per channel (R, G, B)
+        std_image = transformed_image.std(dim=[1, 2])  # Std per channel (R, G, B)
+        print("mean: ", mean_image, ", std: ", std_image)
+
+        transformed_image = F.normalize(transformed_image, mean=mean_image, std=std_image)
+
+        # # Convert tensor to NumPy array
+        # np_image = transformed_image.permute(1, 2, 0).numpy()  # Change shape to (H, W, C)
+
+        # # Normalize the values between 0 and 1 (if needed)
+        # np_image = np.clip(np_image, 0, 1)  # Ensure the values are in the range [0, 1]
+
+        # # Plot the image using Matplotlib
+        # plt.imshow(np_image)
+        # plt.show()
+
+
+        # def get_motion_blur_kernel(x, y, thickness=5, ksize=21):
+        #     """ Obtains Motion Blur Kernel
+        #         Inputs:
+        #             x - horizontal direction of blur
+        #             y - vertical direction of blur
+        #             thickness - thickness of blur kernel line
+        #             ksize - size of blur kernel
+        #         Outputs:
+        #             blur_kernel
+        #         """
+        #     blur_kernel = np.zeros((ksize, ksize))
+        #     c = int(ksize/2)
+
+        #     # blur_kernel = np.zeros((ksize, ksize))
+        #     # blur_kernel = cv2.line(blur_kernel, (c+x,c+y), (c,c), (255,), thickness)
+
+        #     blur_kernel[c, :] = 255  # fill a horizontal line at the center row with ones
+
+        #     # You can adjust the thickness if you want the blur line to be thicker.
+        #     # If you want a more complex blur pattern, you can add additional lines.
+        #     blur_kernel /= ksize 
+        #     return blur_kernel
+        
+        # # # make blur kernel and apply it
+        # # image_width, image_length = transformed_image.size
+        # # blur_kernel = get_motion_blur_kernel(x=image_width, y=image_length, thickness=1, ksize=31)
+        # # transformed_image = cv2.filter2D(transformed_image, ddepth=-1, kernel=blur_kernel)
+
+        # # Example: Convert image to NumPy array if it's a PIL Image
+        # transformed_image = np.array(transformed_image)
+
+        # # Make blur kernel and apply it
+        # image_width, image_length = transformed_image.shape[1], transformed_image.shape[0]  # Use shape for NumPy arrays
+        # blur_kernel = get_motion_blur_kernel(x=0, y=0, thickness=1, ksize=31)  # You can adjust x and y to control the direction
+
+        # # Apply motion blur using filter2D
+        # transformed_image = cv2.filter2D(transformed_image, ddepth=-1, kernel=blur_kernel)
+
+        # # If you need to convert back to a tensor, do it after processing
+        # transformed_image = torch.from_numpy(transformed_image).float() / 255.0
+
+        # # Convert tensor to NumPy array
+        # np_image = transformed_image.permute(1, 2, 0).numpy()  # Change shape to (H, W, C)
+
+        # # Normalize the values between 0 and 1 (if needed)
+        # np_image = np.clip(np_image, 0, 1)  # Ensure the values are in the range [0, 1]
+
+        # # Plot the image using Matplotlib
+        # plt.imshow(np_image)
+        # plt.show()
+
+        "motion blur but colours change"
+        # kernel_size = 30
+
+        # # Create the vertical kernel
+        # kernel_h = np.zeros((kernel_size, kernel_size), dtype=np.float32)
+
+        # # Fill the middle row with ones
+        # kernel_h[int((kernel_size - 1) / 2), :] = np.ones(kernel_size)
+
+        # # Normalize
+        # kernel_h /= kernel_size
+
+        # # 🔹 Convert PyTorch tensor to NumPy
+        # transformed_image_np = transformed_image.cpu().numpy()
+
+        # # 🔹 Handle RGB and grayscale cases separately
+        # if transformed_image_np.shape[0] == 3:  # RGB (C, H, W)
+        #     transformed_image_np = transformed_image_np.transpose(1, 2, 0)  # Convert to (H, W, C)
+        #     transformed_image_np = (transformed_image_np * 255).astype(np.uint8)
+        #     transformed_image_np = cv2.cvtColor(transformed_image_np, cv2.COLOR_RGB2GRAY)  # Convert to grayscale
+        # else:  # Grayscale (1, H, W)
+        #     transformed_image_np = transformed_image_np.squeeze(0)  # Convert to (H, W)
+        #     transformed_image_np = (transformed_image_np * 255).astype(np.uint8)
+
+        # # ✅ Apply filter
+        # filtered_image = cv2.filter2D(transformed_image_np, -1, kernel_h)
+
+        # # 🔹 Convert back to PyTorch tensor (if needed)
+        # # transformed_image = torch.from_numpy(filtered_image).float() / 255  # Normalize back to [0,1]
+
+        # # Convert NumPy array back to PyTorch tensor
+        # transformed_image = torch.from_numpy(filtered_image).float() / 255  # (H, W)
+
+        # # 🔹 Add a channel dimension to match (C, H, W) format
+        # transformed_image = transformed_image.unsqueeze(0)  # Shape becomes (1, H, W)
+
+        # print("Filtering complete!")
+
+        """Original"""
+        # # Calculate padding to match the aspect ratio
+        # padding_width, padding_height = calculate_padding(*transformed_image.size, *self.output_size)
+
+        # # print(f"padding width: {padding_width}, padding height: {padding_height}")
+        # transformed_image = Pad(padding=(padding_width, padding_height), fill=0, padding_mode='constant')(transformed_image)
+        # if not self.infer:
+        #     # Add padding to keypoints
+        #     keypoints += torch.tensor([padding_width, padding_height])  # Adjust for padding
+        #     keypoints = keypoints.view(-1)
+        # # Resize image to output size
+        # # scale_x = self.output_size[1] / transformed_image.size[0]
+        # # scale_y = self.output_size[0] / transformed_image.size[1]
+
+
+        # scale_x = self.output_size[1] / transformed_image.size[0]
+        # scale_y = self.output_size[0] / transformed_image.size[1]
+        # transformed_image = F.resize(transformed_image, self.output_size)
+        # if not self.infer:
+        #     # Resize keypoints
+        #     keypoints[::2] *= scale_x  # Scale x-coordinates
+        #     keypoints[1::2] *= scale_y  # Scale y-coordinates
+        #     padding_width_hm  = int( padding_width * scale_x)
+        #     padding_height_hm = int( padding_height * scale_y)
+
+        # if self.debug:
+        #     not_normalized_image = np.array(transformed_image.copy())
+        #     # # add keypoints to not_normalized_image
+        #     # for i in range(0, len(keypoints), 2):
+        #     #     x = int(keypoints[i].item())
+        #     #     y = int(keypoints[i+1].item())
+        #     #     cv2.circle(not_normalized_image, (x, y), 2, (255, 0, 0), -1)
+
+
+        # # Normalize image
+        # transformed_image = F.to_tensor(transformed_image)
+        # transformed_image = F.normalize(transformed_image, mean=[0.5] * 3, std=[0.5] * 3)
 
         # ----------------------------------
         # ------- Generate heatmaps --------
@@ -252,8 +458,8 @@ def generate_heatmap(image, keypoint, padding_width, padding_height, heatmap_siz
 
 if __name__ == "__main__":
     # Set paths
-    image_folder = "data/dataset"
-    label_file = "data/dataset/labels.csv"
+    image_folder = "test_top"
+    label_file = "labels.csv"
 
     # Create dataset and data loader
     dataset = TopViewDataset(image_folder=image_folder,
@@ -264,7 +470,7 @@ if __name__ == "__main__":
     # Iterate through the data loader
     # selec a random integer between 0 and dataset length
     index = random.randint(0, len(dataset))
-    for i, (images, heatmaps) in enumerate(data_loader):
+    for i, (images, _, heatmaps, _, _) in enumerate(data_loader):
         if i % 5 == 0:  # Show every 10th batch
             image = images[0]
             heatmaps = heatmaps[0]
@@ -283,4 +489,3 @@ if __name__ == "__main__":
             # ax[1].scatter(keypoints[:,0], keypoints[:,1], c='red', s=20)  # Plot keypoints
             # ax[0].imshow(cropped_image[0])
             plt.show()
-

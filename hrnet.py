@@ -269,13 +269,14 @@ blocks_dict = {
 
 class PoseHighResolutionNet(nn.Module):
 
-    def __init__(self, **kwargs):
+    def __init__(self, cfg, **kwargs):
         self.inplanes = 64
         cfg = {
             "MODEL": {
                 "INIT_WEIGHTS": True,
                 "NAME": "pose_hrnet",
-                "NUM_JOINTS": 14,
+                # "NUM_JOINTS": 14,
+                "NUM_JOINTS": 26,
                 "PRETRAINED": "data/hrnet_w32-36af842e.pth",
                 "TARGET_TYPE": "gaussian",
                 "IMAGE_SIZE": [192, 256],
@@ -541,10 +542,10 @@ class PoseHighResolutionNet(nn.Module):
             raise ValueError('{} is not exist!'.format(pretrained))
 
 
-def get_pose_net(is_train, **kwargs):
-    model = PoseHighResolutionNet(**kwargs)
+def get_pose_net(cfg, is_train, **kwargs):
+    model = PoseHighResolutionNet(cfg, **kwargs)
 
-    if is_train:
-        model.init_weights(pretrained='data/hrnet_w32-36af842e.pth')
+    if is_train and cfg['MODEL']['INIT_WEIGHTS']:
+        model.init_weights(cfg['MODEL']['PRETRAINED'])
 
     return model
