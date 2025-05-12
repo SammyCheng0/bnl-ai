@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader, Dataset, random_split
 from PoseDataset import PoseDataset
 import hrnet
-import resnet
+# import resnet
 import yaml
 import os
 from datetime import datetime
@@ -30,7 +30,7 @@ def train_pose(model, image_train_folder, image_test_folder,
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    learning_rate = 0.001
+    learning_rate = 0.00001
     epochs = 1000
     patience = 25
     lowest_test_loss = float('inf')
@@ -46,10 +46,17 @@ def train_pose(model, image_train_folder, image_test_folder,
                                 heatmap_size=output_size,
                                 rotate=False)
 
-    train_batch_size = 10
+
+    train_batch_size = 50
     test_batch_size = 1
     train_dataloader = DataLoader(train_dataset, batch_size=train_batch_size, num_workers=2, shuffle=True)
     test_dataloader  = DataLoader(test_dataset,  batch_size=test_batch_size,  num_workers=2, shuffle=False)
+    
+    for batch_idx, (images, keypoints, heatmaps, scales) in enumerate(train_dataloader):
+    # Skip the batch if it's invalid (None, empty, or invalid tensor)
+        if images is None or images.size(0) == 0:
+            print(f"Skipping batch {batch_idx} due to invalid image")
+            continue  # Skip this batch
 
     model = model.to(device)
     criterion = nn.MSELoss()
@@ -83,7 +90,7 @@ def train_pose(model, image_train_folder, image_test_folder,
         train_loss = 0.0
         start_time = time.time()
         num_batches = 0
-        for batch_idx, (images, gt_kps, gt_hms) in enumerate(train_dataloader):
+        for batch_idx, (images, gt_kps, gt_hms, scaler_kps) in enumerate(train_dataloader):
             images, gt_hms = images.to(device), gt_hms.to(device)
             num_batches += 1
             optimizer.zero_grad()
@@ -98,7 +105,7 @@ def train_pose(model, image_train_folder, image_test_folder,
         model.eval()
         test_loss = 0.0
         num_batches = 0
-        for batch_idx, (images, gt_kps, gt_hms) in enumerate(test_dataloader):
+        for batch_idx, (images, gt_kps, gt_hms, scaler_kps) in enumerate(test_dataloader):
             images, gt_hms = images.to(device), gt_hms.to(device)
             num_batches += 1
             prediction = model(images)
@@ -143,77 +150,44 @@ def top():
                    n_joints=cfg_w32_256_192['MODEL']['NUM_JOINTS'],
                    train_rotate=True)
 
-    # with open(r'config\hrnet_w32_384_288.yaml', 'r') as f:
-    #     cfg_w32_384_288 = yaml.load(f, Loader=yaml.SafeLoader)
-    #     cfg_w32_384_288['MODEL']['NUM_JOINTS'] = 14
-    #     model = hrnet.get_pose_net(cfg_w32_384_288)
-    #     train_pose(model, image_train_folder, 
-    #                image_test_folder, annotation_path, 
-    #                input_size=cfg_w32_384_288['MODEL']['IMAGE_SIZE'],
-    #                output_size=cfg_w32_384_288['MODEL']['HEATMAP_SIZE'],
-    #                n_joints=cfg_w32_384_288['MODEL']['NUM_JOINTS'],
-    #                train_rotate=True)
-
-    # with open(r'config\hrnet_w48_256_192.yaml', 'r') as f:
-    #     cfg_w48_256_192 = yaml.load(f, Loader=yaml.SafeLoader)
-    #     cfg_w48_256_192['MODEL']['NUM_JOINTS'] = 14
-    #     model = hrnet.get_pose_net(cfg_w48_256_192)
-    #     train_pose(model, image_train_folder, 
-    #                image_test_folder, annotation_path, 
-    #                input_size=cfg_w48_256_192['MODEL']['IMAGE_SIZE'],
-    #                output_size=cfg_w48_256_192['MODEL']['HEATMAP_SIZE'],
-    #                n_joints=cfg_w48_256_192['MODEL']['NUM_JOINTS'],
-    #                train_rotate=True)
-
-    # with open(r'config\hrnet_w48_384_288.yaml', 'r') as f:
-    #     cfg_w48_384_288 = yaml.load(f, Loader=yaml.SafeLoader)
-    #     cfg_w48_384_288['MODEL']['NUM_JOINTS'] = 14
-    #     model = hrnet.get_pose_net(cfg_w48_384_288)
-    #     train_pose(model, image_train_folder, 
-    #                image_test_folder, annotation_path, 
-    #                input_size=cfg_w48_384_288['MODEL']['IMAGE_SIZE'],
-    #                output_size=cfg_w48_384_288['MODEL']['HEATMAP_SIZE'],
-    #                n_joints=cfg_w48_384_288['MODEL']['NUM_JOINTS'],
-    #                train_rotate=True)
-    
-    # with open(r'config\res50_256x192_d256x3_adam_lr1e-3.yaml', 'r') as f:
-    #     cfg_res50_256x192 = yaml.load(f, Loader=yaml.SafeLoader)
-    #     cfg_res50_256x192['MODEL']['NUM_JOINTS'] = 14
-    #     model = resnet.get_pose_net(cfg_res50_256x192, is_train=True)
-    #     train_pose(model, image_train_folder, 
-    #                image_test_folder, annotation_path, 
-    #                input_size=cfg_res50_256x192['MODEL']['IMAGE_SIZE'],
-    #                output_size=cfg_res50_256x192['MODEL']['HEATMAP_SIZE'],
-    #                n_joints=cfg_res50_256x192['MODEL']['NUM_JOINTS'],
-    #                train_rotate=True)
-        
-    # with open(r'config\res152_256x192_d256x3_adam_lr1e-3.yaml', 'r') as f:
-    #     cfg_res152_256x192 = yaml.load(f, Loader=yaml.SafeLoader)
-    #     cfg_res152_256x192['MODEL']['NUM_JOINTS'] = 14
-    #     model = resnet.get_pose_net(cfg_res152_256x192, is_train=True)
-    #     train_pose(model, image_train_folder, 
-    #                image_test_folder, annotation_path, 
-    #                input_size=cfg_res152_256x192['MODEL']['IMAGE_SIZE'],
-    #                output_size=cfg_res152_256x192['MODEL']['HEATMAP_SIZE'],
-    #                n_joints=cfg_res152_256x192['MODEL']['NUM_JOINTS'],
-    #                train_rotate=True)
-
 def side():
-    image_train_folder = r'C:\Users\Lund University\git\bnl-ai\datasets\side_374280\train'
-    image_test_folder  = r'C:\Users\Lund University\git\bnl-ai\datasets\side_374280\test'
-    annotation_path    = r'C:\Users\Lund University\git\bnl-ai\datasets\side_374280\annotations.csv'
+    image_train_folder = r'sammy\sideview\train'
+    image_test_folder  = r'sammy\sideview\test'
+    annotation_path    = r'sammy\sideview\output_4_sorted_cleaned.csv'
 
-    with open(r'config\hrnet_w48_384_288.yaml', 'r') as f:
+    with open(r'sammy\data\hrnet_w48_384_288.yaml', 'r') as f:
         cfg_w48_384_288 = yaml.load(f, Loader=yaml.SafeLoader)
-        cfg_w48_384_288['MODEL']['NUM_JOINTS'] = 26
-        model = hrnet.get_pose_net(cfg_w48_384_288)
+        cfg_w48_384_288['MODEL']['NUM_JOINTS'] = 26  
+        model = hrnet.get_pose_net(cfg_w48_384_288, is_train=True)
         train_pose(model, image_train_folder, 
                    image_test_folder, annotation_path, 
                    input_size=cfg_w48_384_288['MODEL']['IMAGE_SIZE'],
                    output_size=cfg_w48_384_288['MODEL']['HEATMAP_SIZE'],
                    n_joints=cfg_w48_384_288['MODEL']['NUM_JOINTS'],
                    train_rotate=False)
+        
+    # with open(r'sammy\data\hrnet_w32_384_288.yaml', 'r') as f:
+    #     cfg_w32_384_288 = yaml.load(f, Loader=yaml.SafeLoader)
+    #     cfg_w32_384_288['MODEL']['NUM_JOINTS'] = 26
+    #     model = hrnet.get_pose_net(cfg_w32_384_288, is_train=True)
+    #     train_pose(model, image_train_folder, 
+    #                image_test_folder, annotation_path, 
+    #                input_size=cfg_w32_384_288['MODEL']['IMAGE_SIZE'],
+    #                output_size=cfg_w32_384_288['MODEL']['HEATMAP_SIZE'],
+    #                n_joints=cfg_w32_384_288['MODEL']['NUM_JOINTS'],
+    #                train_rotate=False)
+    
+    # with open(r'sammy\data\hrnet_w48_384_288.yaml', 'r') as f:
+    #     cfg_w48_384_288 = yaml.load(f, Loader=yaml.SafeLoader)
+    #     cfg_w48_384_288['MODEL']['NUM_JOINTS'] = 26
+    #     model = hrnet.get_pose_net(cfg_w48_384_288, is_train=True)
+    #     train_pose(model, image_train_folder, 
+    #                image_test_folder, annotation_path, 
+    #                input_size=cfg_w48_384_288['MODEL']['IMAGE_SIZE'],
+    #                output_size=cfg_w48_384_288['MODEL']['HEATMAP_SIZE'],
+    #                n_joints=cfg_w48_384_288['MODEL']['NUM_JOINTS'],
+    #                train_rotate=False)
 
 if __name__ == '__main__':
-    top()
-    # side()
+    # top()
+    side()

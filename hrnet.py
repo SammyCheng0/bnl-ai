@@ -270,61 +270,8 @@ blocks_dict = {
 class PoseHighResolutionNet(nn.Module):
 
     def __init__(self, cfg, **kwargs):
+        self.name = 'PoseHRNet-W{}'.format(cfg['MODEL']['EXTRA']['STAGE2']['NUM_CHANNELS'][0])
         self.inplanes = 64
-        cfg = {
-            "MODEL": {
-                "INIT_WEIGHTS": True,
-                "NAME": "pose_hrnet",
-                # "NUM_JOINTS": 14,
-                "NUM_JOINTS": 26,
-                "PRETRAINED": "data/hrnet_w32-36af842e.pth",
-                "TARGET_TYPE": "gaussian",
-                "IMAGE_SIZE": [192, 256],
-                "HEATMAP_SIZE": [48, 64],
-                "SIGMA": 2,
-                "EXTRA": {
-                    "PRETRAINED_LAYERS": [
-                        "conv1",
-                        "bn1",
-                        "conv2",
-                        "bn2",
-                        "layer1",
-                        "transition1",
-                        "stage2",
-                        "transition2",
-                        "stage3",
-                        "transition3",
-                        "stage4",
-                    ],
-                    "FINAL_CONV_KERNEL": 1,
-                    "STAGE2": {
-                        "NUM_MODULES": 1,
-                        "NUM_BRANCHES": 2,
-                        "BLOCK": "BASIC",
-                        "NUM_BLOCKS": [4, 4],
-                        "NUM_CHANNELS": [32, 64],
-                        "FUSE_METHOD": "SUM",
-                    },
-                    "STAGE3": {
-                        "NUM_MODULES": 4,
-                        "NUM_BRANCHES": 3,
-                        "BLOCK": "BASIC",
-                        "NUM_BLOCKS": [4, 4, 4],
-                        "NUM_CHANNELS": [32, 64, 128],
-                        "FUSE_METHOD": "SUM",
-                    },
-                    "STAGE4": {
-                        "NUM_MODULES": 3,
-                        "NUM_BRANCHES": 4,
-                        "BLOCK": "BASIC",
-                        "NUM_BLOCKS": [4, 4, 4, 4],
-                        "NUM_CHANNELS": [32, 64, 128, 256],
-                        "FUSE_METHOD": "SUM",
-                    },
-                },
-            }
-        }
-
         extra = cfg['MODEL']['EXTRA']
         super(PoseHighResolutionNet, self).__init__()
 

@@ -17,6 +17,20 @@ import SHG
 from torchvision.transforms.functional import resize
 import os
 from datetime import datetime
+import pandas as pd
+
+def load_mean_std_from_file(file_path, device='cpu'):
+    with open(file_path, 'r') as f:
+        lines = f.readlines()
+
+    def parse_tensor_line(line):
+        tensor_str = line.split("tensor(")[-1].rstrip(")\n")
+        numbers = [float(x.strip()) for x in tensor_str.strip("[]").split(',')]
+        return torch.tensor(numbers).view(3, 1, 1).to(device)
+
+    mean = parse_tensor_line(lines[0])
+    std = parse_tensor_line(lines[1])
+    return mean, std
 
 def test_pose(model, image_test_folder, annotation_path, input_size, output_size):
 
@@ -25,10 +39,12 @@ def test_pose(model, image_test_folder, annotation_path, input_size, output_size
 
     model.eval()
 
-    if model.name:
-        model_name = model.name
-    else:
-        model_name = model.__class__.__name__
+    # if model.name:
+    #     model_name = model.name
+    # else:
+    #     model_name = model.__class__.__name__
+    
+    model_name = getattr(model, "name", model.__class__.__name__)
 
     output_folder = f'out/test-{datetime.now().strftime("%y%m%d_%H%M%S")}-{model_name}'
     image_folder = os.path.join(output_folder, 'images')
@@ -86,10 +102,13 @@ def test_pose(model, image_test_folder, annotation_path, input_size, output_size
             images = images.to(device)
             start = time.time()
             predictions = model(images)
+
             end = time.time()
             print(f"Model output channels: {predictions.size(1)}")
             # print(f"Image {batch_idx} took {end - start:.4f} seconds")
             image = images.squeeze(0)
+            """_summary_
+            """            
             gt_keypoints = gt_keypoints.squeeze(0)
             gt_hms = gt_hms.squeeze(0)
             predictions = predictions.squeeze(0)
@@ -112,9 +131,13 @@ def test_pose(model, image_test_folder, annotation_path, input_size, output_size
 
             list_SE.append(torch.sum((keypoints_without_confidence/scaler_kps - gt_keypoints/scaler_kps) ** 2, dim=1))
 
+
             # Denormalize the image
-            mean = torch.tensor([0.5, 0.5, 0.5]).view(3, 1, 1).to(device)
-            std = torch.tensor([0.5, 0.5, 0.5]).view(3, 1, 1).to(device)
+            # mean = torch.tensor([0.5, 0.5, 0.5]).view(3, 1, 1).to(device)
+            # std = torch.tensor([0.5, 0.5, 0.5]).view(3, 1, 1).to(device)
+            
+            mean, std = load_mean_std_from_file(r'sammy\train_normalization.txt', device=device)
+            
             denormalized_image = (image * std + mean).to('cpu')  # Reverse normalization
             denormalized_image = denormalized_image.clamp(0, 1)  # Ensure valid range
             denormalized_image = (denormalized_image * 255).byte().numpy()  # Convert to 0-255 range
@@ -135,10 +158,13 @@ def test_pose(model, image_test_folder, annotation_path, input_size, output_size
             # print(f"Image saved at {figure_path}")
         stacked_SE = torch.stack(list_SE, dim=0)
         RMSE = torch.sqrt(torch.nanmean(stacked_SE))
-        if model.name:
-            print(f"{model.name}-{input_size}, RMSE = {RMSE}")
-        else:
-            print(f"{model. __class__. __name__}-{input_size}, RMSE = {RMSE}")
+        # if model.name:
+        #     print(f"{model.name}-{input_size}, RMSE = {RMSE}")
+        # else:
+        #     print(f"{model. __class__. __name__}-{input_size}, RMSE = {RMSE}")
+        model_name = getattr(model, "name", model.__class__.__name__)
+        print(f"{model_name}-{input_size}, RMSE = {RMSE}")
+
 
     with open(info_file, 'a') as file:
         file.write(f"\n ------------------------ \n\n")
@@ -146,7 +172,7 @@ def test_pose(model, image_test_folder, annotation_path, input_size, output_size
 
 if __name__ == '__main__':
     image_test_folder  = r'sammy\sideview\test'
-    annotation_path    = r'sammy\output_4_sorted_cleaned.csv'
+    annotation_path    = r'sammy\sideview\merged_labels.csv'
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -166,89 +192,22 @@ if __name__ == '__main__':
     # Load the checkpoint and handle potential errors
     try:
         # Load the model's state dictionary (weights)
-        checkpoint = torch.load(r"out\train-250415_151610-PoseHRNet-W48\snapshot_best.pth", map_location=device)
+        checkpoint = torch.load(r"out\train-250429_145152\snapshot_best.pth", map_location=device)
         model.load_state_dict(checkpoint, strict=False)  # Use strict=False to ignore missing/extra keys
-        print(f"Model weights loaded successfully from {'sammy/out/train-250408_110232/snapshot_best.pth'}")
+        print(f"Model weights loaded successfully from {'out\train-250429_145152\snapshot_best.pth'}")
 
     except RuntimeError as e:
         print(f"Error loading model: {e}")
         # You could add additional error handling if necessary, or re-raise the error.
         raise e
-    # model.load_state_dict(torch.load(r"sammy\out\train-250408_110232\snapshot_best.pth", weights_only=True, map_location=device))
-    # test_pose(model, image_test_folder, annotation_path, 
-    #           input_size=[256, 256],
-    #           output_size=[64, 64])
-    
-    # model = SHG.get_pose_net(nstack=8)
-    # model = model.to(device)
-    # model.load_state_dict(torch.load(r"E:\trained-models\v489\lr0001\train-250331_192816\snapshot_best.pth", weights_only=True, map_location=device))
-    # test_pose(model, image_test_folder, annotation_path, 
-    #           input_size=[128, 128],
-    #           output_size=[32, 32])
-    
-    # model = SHG.get_pose_net(nstack=8)
-    # model = model.to(device)
-    # model.load_state_dict(torch.load(r"E:\trained-models\v489\lr0001\train-250331_200034\snapshot_best.pth", weights_only=True, map_location=device))
-    # test_pose(model, image_test_folder, annotation_path, 
-    #           input_size=[256, 256],
-    #           output_size=[64, 64])
 
-    with open(r'sammy\hrnet_w48_384_288.yaml', 'r') as f:
+    with open(r'sammy\data\hrnet_w48_384_288.yaml', 'r') as f:
             cfg_w32_256_192 = yaml.load(f, Loader=yaml.SafeLoader)
             cfg_w32_256_192['MODEL']['NUM_JOINTS'] = 26
             model = hrnet.get_pose_net(cfg_w32_256_192, is_train=False)
             model = model.to(device)
-            model.load_state_dict(torch.load(r"out\train-250415_151610-PoseHRNet-W48\snapshot_best.pth", weights_only=True, map_location=device))
+            model.load_state_dict(torch.load(r"out\train-250429_145152\snapshot_best.pth", weights_only=True, map_location=device))
             test_pose(model, image_test_folder, annotation_path, 
                       input_size=cfg_w32_256_192['MODEL']['IMAGE_SIZE'],
                       output_size=cfg_w32_256_192['MODEL']['HEATMAP_SIZE'])
-            
-    # with open(r'marco\config\hrnet_w32_384_288.yaml', 'r') as f:
-    #         cfg_w32_384_288 = yaml.load(f, Loader=yaml.SafeLoader)
-    #         cfg_w32_384_288['MODEL']['NUM_JOINTS'] = 14
-    #         model = hrnet.get_pose_net(cfg_w32_384_288, is_train=False)
-    #         model = model.to(device)
-    #         model.load_state_dict(torch.load(r"E:\trained-models\v489\lr00001\train-250401_005630\snapshot_best.pth", weights_only=True, map_location=device))
-    #         test_pose(model, image_test_folder, annotation_path, 
-    #                   input_size=cfg_w32_384_288['MODEL']['IMAGE_SIZE'],
-    #                   output_size=cfg_w32_384_288['MODEL']['HEATMAP_SIZE'])
-
-    # with open(r'config\hrnet_w48_384_288.yaml', 'r') as f:
-    #         cfg_w48_384_288 = yaml.load(f, Loader=yaml.SafeLoader)
-    #         cfg_w48_384_288['MODEL']['NUM_JOINTS'] = 14
-    #         model = hrnet.get_pose_net(cfg_w48_384_288, is_train=False)
-    #         model = model.to(device)
-    #         model.load_state_dict(torch.load(r'out\best-top-w48\snapshot_best.pth', weights_only=True, map_location=device))
-    #         test_pose(model, image_test_folder, annotation_path, 
-    #                   input_size=cfg_w48_384_288['MODEL']['IMAGE_SIZE'],
-    #                   output_size=cfg_w48_384_288['MODEL']['HEATMAP_SIZE'])
-    
-    # with open(r'marco\config\res50_256x192_d256x3_adam_lr1e-3.yaml', 'r') as f:
-    #     cfg_res50_256x192 = yaml.load(f, Loader=yaml.SafeLoader)
-    #     cfg_res50_256x192['MODEL']['NUM_JOINTS'] = 14
-    #     model = resnet.get_pose_net(cfg_res50_256x192, is_train=False)
-    #     model = model.to(device)
-    #     model.load_state_dict(torch.load(r"E:\trained-models\v489\lr00001\train-250401_013713\snapshot_best.pth", weights_only=True, map_location=device))
-    #     test_pose(model, image_test_folder, annotation_path, 
-    #                 input_size=cfg_res50_256x192['MODEL']['IMAGE_SIZE'],
-    #                 output_size=cfg_res50_256x192['MODEL']['HEATMAP_SIZE'])
-        
-    # with open(r'marco\config\res50_384x288_d256x3_adam_lr1e-3.yaml', 'r') as f:
-    #     cfg_res50_384x288 = yaml.load(f, Loader=yaml.SafeLoader)
-    #     cfg_res50_384x288['MODEL']['NUM_JOINTS'] = 14
-    #     model = resnet.get_pose_net(cfg_res50_384x288, is_train=False)
-    #     model = model.to(device)
-    #     model.load_state_dict(torch.load(r"E:\trained-models\v489\lr00001\train-250401_020352\snapshot_best.pth", weights_only=True, map_location=device))
-    #     test_pose(model, image_test_folder, annotation_path, 
-    #                 input_size=cfg_res50_384x288['MODEL']['IMAGE_SIZE'],
-    #                 output_size=cfg_res50_384x288['MODEL']['HEATMAP_SIZE'])
-    
-    # with open(r'marco\config\res152_256x192_d256x3_adam_lr1e-3.yaml', 'r') as f:
-    #     cfg_res152_256x192 = yaml.load(f, Loader=yaml.SafeLoader)
-    #     cfg_res152_256x192['MODEL']['NUM_JOINTS'] = 14
-    #     model = resnet.get_pose_net(cfg_res152_256x192, is_train=False)
-    #     model = model.to(device)
-    #     model.load_state_dict(torch.load(r"E:\trained-models\v489\lr0001\train-250402_023742\snapshot_best.pth", weights_only=True, map_location=device))
-    #     test_pose(model, image_test_folder, annotation_path, 
-    #                 input_size=cfg_res152_256x192['MODEL']['IMAGE_SIZE'],
-    #                 output_size=cfg_res152_256x192['MODEL']['HEATMAP_SIZE'])
+   
