@@ -1,9 +1,10 @@
 import os
 import pandas as pd
-from PIL import Image
+from PIL import Image, ImageEnhance
 import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
+from torchvision.transforms import ToTensor, ToPILImage
 import random
 from torchvision.transforms import functional as F
 from torchvision.transforms import Pad
@@ -98,8 +99,9 @@ def calculate_dataset_mean_std(dataset, batch_size=1):
 
 
 class PoseDataset(Dataset):
-    def __init__(self, image_folder, resize_to, heatmap_size, label_file=None, rotate=False, scale=False, motion_blur=False, mean=None, std=None):
-    # def __init__(self, image_folder, resize_to, heatmap_size, label_file=None, rotate=False):
+    # def __init__(self, image_folder, resize_to, heatmap_size, label_file=None, rotate=False, scale=False, motion_blur=False, brightness=False, contrast=False, sharpness=False, mean=None, std=None):
+    # def __init__(self, image_folder, resize_to, heatmap_size, label_file=None, rotate=False, scale=True, motion_blur=True, brightness=True, contrast=True, sharpness=True, mean=None, std=None):
+    def __init__(self, image_folder, resize_to, heatmap_size, label_file=None, rotate=False, scale=False, motion_blur=False, brightness=True, contrast=True, sharpness=False, mean=None, std=None):
         """
         Args:
             image_folder (str): Path to the folder containing images.
@@ -113,6 +115,9 @@ class PoseDataset(Dataset):
         self.rotate = rotate
         self.scale = scale
         self.motion_blur = motion_blur
+        self.brightness = brightness
+        self.contrast = contrast
+        self.sharpness = sharpness
         self.labels = pd.read_csv(label_file)
         self.filenames = os.listdir(image_folder)
         self.filenames.sort()
@@ -305,7 +310,8 @@ class PoseDataset(Dataset):
                     """
                 blur_kernel = np.zeros((ksize, ksize))
                 c = int(ksize/2)
-
+                
+                # horizontal blur kernel
                 blur_kernel[c, :] = 255  
 
                 blur_kernel /= ksize 
@@ -322,6 +328,119 @@ class PoseDataset(Dataset):
 
             # If you need to convert back to a tensor, do it after processing
             transformed_image = torch.from_numpy(transformed_image).float() / 255.0
+
+        if self.brightness:
+            to_pil = ToPILImage()
+            pil_image = to_pil(transformed_image)
+            brightness_factor = round(random.uniform(0.5, 2), 1)
+            transformed_image = ImageEnhance.Brightness(pil_image).enhance(brightness_factor)
+            to_tensor = ToTensor()
+            transformed_image = to_tensor(pil_image)
+
+        # if self.brightness:
+        #     # Convert to PIL image for brightness adjustment
+        #     to_pil = ToPILImage()
+        #     pil_image = to_pil(transformed_image)
+
+        #     # Before brightness adjustment
+        #     plt.subplot(1, 2, 1)  # Create a 1x2 grid, this is the first subplot
+        #     plt.imshow(pil_image)
+        #     plt.title('Before Brightness')
+        #     plt.axis('off')  # Hide axes for a cleaner look
+
+        #     # Apply brightness adjustment
+        #     brightness_factor = round(random.uniform(1.5, 2), 1)
+        #     print(f"Brightness factor: {brightness_factor}")
+        #     pil_image_bright = ImageEnhance.Brightness(pil_image).enhance(brightness_factor)
+
+        #     # After brightness adjustment
+        #     plt.subplot(1, 2, 2)  # This is the second subplot
+        #     plt.imshow(pil_image_bright)
+        #     plt.title('After Brightness')
+        #     plt.axis('off')
+
+        #     # Show both images side by side
+        #     plt.show()
+
+        #     # Convert back to tensor after applying enhancement
+        #     to_tensor = ToTensor()
+        #     transformed_image = to_tensor(pil_image_bright)
+
+        if self.contrast:
+            to_pil = ToPILImage()
+            pil_image = to_pil(transformed_image)
+            contrast_factor = round(random.uniform(0.5, 1.5), 1)
+            transformed_image = ImageEnhance.Contrast(pil_image).enhance(contrast_factor)
+            to_tensor = ToTensor()
+            transformed_image = to_tensor(pil_image)
+
+        # if self.contrast:
+        #     # Convert to PIL image for contrast adjustment
+        #     to_pil = ToPILImage()
+        #     pil_image = to_pil(transformed_image)
+
+        #     # Before contrast adjustment
+        #     plt.subplot(1, 2, 1)
+        #     plt.imshow(pil_image)
+        #     plt.title('Before Contrast')
+        #     plt.axis('off')
+
+        #     # Apply contrast adjustment
+        #     contrast_factor = round(random.uniform(1, 1.5), 1)
+        #     print(f"Contrast factor: {contrast_factor}")
+        #     pil_image_contrast = ImageEnhance.Contrast(pil_image).enhance(contrast_factor)
+
+        #     # After contrast adjustment
+        #     plt.subplot(1, 2, 2)
+        #     plt.imshow(pil_image_contrast)
+        #     plt.title('After Contrast')
+        #     plt.axis('off')
+
+        #     # Show both images
+        #     plt.show()
+
+        #     # Convert back to tensor after applying enhancement
+        #     to_tensor = ToTensor()
+        #     transformed_image = to_tensor(pil_image_contrast)
+
+        if self.sharpness:
+            to_pil = ToPILImage()
+            pil_image = to_pil(transformed_image)
+            sharpness_factor = round(random.uniform(0.5, 2), 1)
+            transformed_image = ImageEnhance.Sharpness(pil_image).enhance(sharpness_factor)
+            to_tensor = ToTensor()
+            transformed_image = to_tensor(pil_image)
+
+        # if self.sharpness:
+        #     # Convert to PIL image for sharpness adjustment
+        #     to_pil = ToPILImage()
+        #     pil_image = to_pil(transformed_image)
+
+        #     # Before sharpness adjustment
+        #     plt.subplot(1, 2, 1)
+        #     plt.imshow(pil_image)
+        #     plt.title('Before Sharpness')
+        #     plt.axis('off')
+
+        #     # Apply sharpness adjustment
+        #     sharpness_factor = round(random.uniform(0.5, 2), 1)
+        #     print(f"Sharpness factor: {sharpness_factor}")
+        #     pil_image_sharp = ImageEnhance.Sharpness(pil_image).enhance(sharpness_factor)
+
+        #     # After sharpness adjustment
+        #     plt.subplot(1, 2, 2)
+        #     plt.imshow(pil_image_sharp)
+        #     plt.title('After Sharpness')
+        #     plt.axis('off')
+
+        #     # Show both images
+        #     plt.show()
+
+        #     # Convert back to tensor after applying enhancement
+        #     to_tensor = ToTensor()
+        #     transformed_image = to_tensor(pil_image_sharp)
+
+
         if self.mean is not None and self.std is not None:
             output_path = 'train_normalization.txt'
             with open(output_path, 'w') as f:
@@ -413,8 +532,8 @@ def generate_heatmap(image, keypoint, padding_width, padding_height, heatmap_siz
 
 if __name__ == "__main__":
     # Set paths
-    image_folder = r"sammy\sideview\aug_img_without_rotation"
-    label_file = r"sammy\sideview\merged_labels.csv"
+    image_folder = r"SideView\Side_images"
+    label_file = r"SideView\merged_labels.csv"
     # label_file = r"annotations.csv"
 
     # Create dataset and data loader

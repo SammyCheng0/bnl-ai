@@ -151,11 +151,11 @@ def top():
                    train_rotate=True)
 
 def side():
-    image_train_folder = r'sammy\sideview\train'
-    image_test_folder  = r'sammy\sideview\test'
-    annotation_path    = r'sammy\sideview\output_4_sorted_cleaned.csv'
+    image_train_folder = r'SideView\Side_images'
+    image_test_folder  = r'SideView\Side_images'
+    annotation_path    = r'SideView\merged_labels.csv'
 
-    with open(r'sammy\data\hrnet_w48_384_288.yaml', 'r') as f:
+    with open(r'config\hrnet_w32_256_192.yaml', 'r') as f:
         cfg_w48_384_288 = yaml.load(f, Loader=yaml.SafeLoader)
         cfg_w48_384_288['MODEL']['NUM_JOINTS'] = 26  
         model = hrnet.get_pose_net(cfg_w48_384_288, is_train=True)
