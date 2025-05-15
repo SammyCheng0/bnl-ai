@@ -101,7 +101,7 @@ def calculate_dataset_mean_std(dataset, batch_size=1):
 class PoseDataset(Dataset):
     # def __init__(self, image_folder, resize_to, heatmap_size, label_file=None, rotate=False, scale=False, motion_blur=False, brightness=False, contrast=False, sharpness=False, mean=None, std=None):
     # def __init__(self, image_folder, resize_to, heatmap_size, label_file=None, rotate=False, scale=True, motion_blur=True, brightness=True, contrast=True, sharpness=True, mean=None, std=None):
-    def __init__(self, image_folder, resize_to, heatmap_size, label_file=None, rotate=False, scale=False, motion_blur=False, brightness=True, contrast=True, sharpness=False, mean=None, std=None):
+    def __init__(self, image_folder, resize_to, heatmap_size, label_file=None, rotate=False, scale=True, motion_blur=True, brightness=True, contrast=True, sharpness=True, gamma= True, mean=None, std=None):
         """
         Args:
             image_folder (str): Path to the folder containing images.
@@ -118,6 +118,7 @@ class PoseDataset(Dataset):
         self.brightness = brightness
         self.contrast = contrast
         self.sharpness = sharpness
+        self.gamma = gamma
         self.labels = pd.read_csv(label_file)
         self.filenames = os.listdir(image_folder)
         self.filenames.sort()
@@ -333,6 +334,7 @@ class PoseDataset(Dataset):
             to_pil = ToPILImage()
             pil_image = to_pil(transformed_image)
             brightness_factor = round(random.uniform(0.5, 2), 1)
+            # print(f"brightness_factor: {brightness_factor}")
             transformed_image = ImageEnhance.Brightness(pil_image).enhance(brightness_factor)
             to_tensor = ToTensor()
             transformed_image = to_tensor(pil_image)
@@ -370,6 +372,7 @@ class PoseDataset(Dataset):
             to_pil = ToPILImage()
             pil_image = to_pil(transformed_image)
             contrast_factor = round(random.uniform(0.5, 1.5), 1)
+            # print(f"contrast_factor: {contrast_factor}")
             transformed_image = ImageEnhance.Contrast(pil_image).enhance(contrast_factor)
             to_tensor = ToTensor()
             transformed_image = to_tensor(pil_image)
@@ -407,6 +410,7 @@ class PoseDataset(Dataset):
             to_pil = ToPILImage()
             pil_image = to_pil(transformed_image)
             sharpness_factor = round(random.uniform(0.5, 2), 1)
+            # print(f"sharpness_factor: {sharpness_factor}")
             transformed_image = ImageEnhance.Sharpness(pil_image).enhance(sharpness_factor)
             to_tensor = ToTensor()
             transformed_image = to_tensor(pil_image)
@@ -440,6 +444,50 @@ class PoseDataset(Dataset):
         #     to_tensor = ToTensor()
         #     transformed_image = to_tensor(pil_image_sharp)
 
+        if self.gamma:
+            to_pil = ToPILImage()
+            pil_image = to_pil(transformed_image)
+            gamma = round(random.uniform(0.5, 1.5), 2)
+            
+            inv_gamma = 1.0 / gamma
+            lut = [pow(x / 255., inv_gamma) * 255 for x in range(256)]
+            lut = lut * 3  # for R, G, B channels
+            pil_image = pil_image.point(lut)
+            
+            to_tensor = ToTensor()
+            transformed_image = to_tensor(pil_image)
+
+        # if self.gamma:
+        #     # Convert to PIL image for gamma adjustment
+        #     to_pil = ToPILImage()
+        #     pil_image = to_pil(transformed_image)
+
+        #     # Show before gamma adjustment
+        #     plt.subplot(1, 2, 1)
+            # plt.imshow(pil_image)
+            # plt.title('Before Gamma')
+            # plt.axis('off')
+
+            # # Apply gamma correction
+            # gamma = round(random.uniform(0.8, 1.3), 1)
+            # print(f"Gamma factor: {gamma}")
+            # inv_gamma = 1.0 / gamma
+            # lut = [pow(x / 255., inv_gamma) * 255 for x in range(256)]
+            # lut = lut * 3  # for R, G, B
+            # pil_image_gamma = pil_image.point(lut)
+
+            # # Show after gamma adjustment
+            # plt.subplot(1, 2, 2)
+            # plt.imshow(pil_image_gamma)
+            # plt.title('After Gamma')
+            # plt.axis('off')
+
+            # # Display both images
+            # plt.show()
+
+            # # Convert back to tensor
+            # to_tensor = ToTensor()
+            # transformed_image = to_tensor(pil_image_gamma)
 
         if self.mean is not None and self.std is not None:
             output_path = 'train_normalization.txt'
