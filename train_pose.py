@@ -225,6 +225,64 @@ def train_pose(model, image_train_folder, image_val_folder,
 
     return epoch, lowest_val_loss, total_time
 
+def objective(trial, args):
+    # Sample hyperparameters
+    selected_augs = []
+    POSSIBLE_AUGS = args.augmentations
+
+    if trial.number < len(POSSIBLE_AUGS):
+        # Phase 1: Try each augmentation individually
+        selected_augs = [POSSIBLE_AUGS[trial.number]]
+    else:
+        # Phase 2: Let Optuna explore combinations freely
+        for aug in POSSIBLE_AUGS:
+            use_aug = trial.suggest_categorical(aug, [True, False])
+            if use_aug:
+                selected_augs.append(aug)
+            
+    # Load model config
+    with open(args.config, 'r') as f:
+        cfg = yaml.load(f, Loader=yaml.SafeLoader)
+    model = hrnet.get_pose_net(cfg, is_train=True)
+    with mlflow.start_run(run_name=f"trial_{trial.number}"):
+        # Log parameters from Optuna
+        mlflow.log_params({
+            "trial_number": trial.number,
+            "augmentation_combo": ','.join(selected_augs)
+        })
+
+        # Launch training and get final validation loss
+        best_test_loss, model_output_folder = train_pose(
+            model=model,
+            image_train_folder=args.image_train_folder,
+            image_test_folder=args.image_test_folder,
+            annotation_path=args.annotation_path,
+            input_size=cfg['MODEL']['IMAGE_SIZE'],
+            output_size=cfg['MODEL']['HEATMAP_SIZE'],
+            n_joints=cfg['MODEL']['NUM_JOINTS'],
+            augmentations=selected_augs,
+            trial=trial  # optionally pass for pruning
+        )
+        mlflow.log_metric("final_test_loss", best_test_loss)
+        
+        if args.model_testing_after_training:
+            device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+            model = hrnet.get_pose_net(cfg, is_train=True)
+            model_path = os.path.join(model_output_folder, f'snapshot_best.pth')
+            model_to_test = model.load_state_dict(torch.load(model_path, 
+                                weights_only=True, map_location=device))
+            model = model.to(device)
+            RMSE, RMSE_per_keypoint, coverage, coverage_per_keypoint = test_pose(model, 
+                            image_test_folder=f"/home/pa7063so/lu2024-17-33/patricia/representative_test_ds/{args.type}/images", 
+                            annotation_path=f"/home/pa7063so/lu2024-17-33/patricia/representative_test_ds/{args.type}/annotations_converted.csv", 
+                            input_size=cfg['MODEL']['IMAGE_SIZE'],
+                            output_size=cfg['MODEL']['IMAGE_SIZE'],
+                            confidence_labels=0.05,
+                            results_output=os.path.dirname(model_path))
+            print(f"RMSE: {RMSE}")
+            
+        return best_test_loss
+
 if __name__ == '__main__':
     image_train_folder = r'SideView\Side_images'
     image_val_folder   = r'SideView\Side_images'
