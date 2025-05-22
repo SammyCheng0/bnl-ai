@@ -187,6 +187,7 @@ class PoseDataset(Dataset):
         return len(self.image_filenames)
 
     def __getitem__(self, idx):
+        print(f"Loading sample {idx}")
         
         # ------- steps --------
         # Crop image around mouse

@@ -20,6 +20,7 @@ import yaml
 from datetime import datetime
 import os
 import mlflow
+import optuna
 
 # def train_pose(model, image_train_folder, image_val_folder, 
 #                annotation_path, input_size, output_size, device='cpu',
@@ -31,7 +32,7 @@ def train_pose(model, image_train_folder, image_val_folder,
                annotation_path, input_size, output_size, device='cpu',
                n_joints=None, train_batch_size=25, patience=10, 
                start_lr=0.001, min_lr=0.00001, epochs=10000,
-               threshold = 1e-3, output_folder=None):
+               threshold = 1e-3,  augmentations=list(), output_folder=None, trial=None):
 
     if platform.system() == "Darwin":  # "Darwin" is the name for macOS
         multiprocessing.set_start_method("fork", force=True)
@@ -71,7 +72,8 @@ def train_pose(model, image_train_folder, image_val_folder,
                                     motion_blur=True,
                                     brightness=True,
                                     contrast=True,
-                                    sharpness=True
+                                    sharpness=True,
+                                    gamma=True
         )
 
         val_dataset = PoseDataset(
@@ -84,7 +86,8 @@ def train_pose(model, image_train_folder, image_val_folder,
             motion_blur=False,
             brightness=False,
             contrast=False,
-            sharpness=False
+            sharpness=False,
+            gamma=True
         )
 
         val_batch_size = 1
@@ -195,6 +198,28 @@ def train_pose(model, image_train_folder, image_val_folder,
             if current_lr <= last_lr:
                 print(f"Stopping training: learning rate has reached the minimum threshold ({min_lr})")
                 break
+
+            # Reporting to Optuna
+            if trial:
+                trial.report(val_loss, epoch)
+                # Prune only when there are combinations of augmentations - let run indiv. aug till the end
+                if trial.should_prune():
+                    augmentations = {
+                        "rotate": trial.suggest_categorical("rotate", [False, True]),
+                        "scale": trial.suggest_categorical("scale", [False, True]),
+                        "motion_blur": trial.suggest_categorical("motion_blur", [False, True]),
+                        "brightness": trial.suggest_categorical("brightness", [False, True]),
+                        "contrast": trial.suggest_categorical("contrast", [False, True]),
+                        "sharpness": trial.suggest_categorical("sharpness", [False, True]),
+                        "gamma": trial.suggest_categorical("gamma", [False, True])
+                    }
+                    # Count how many augmentations are enabled
+                    n_active_augs = sum(augmentations.values())
+                    print("active augmentations: ", n_active_augs)
+                    if len(n_active_augs)!=1:
+                        raise optuna.exceptions.TrialPruned()
+                    else:
+                        print("Pruning indicated but skipping because of interest in individual augmentation",file=sys.stderr)
 
         plot_losses(loss_csv_path)
 
