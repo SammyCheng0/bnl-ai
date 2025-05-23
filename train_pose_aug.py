@@ -1,18 +1,25 @@
 import argparse
 import csv
-import os
-import sys
 import time
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import yaml
-from datetime import datetime
-from torch.utils.data import DataLoader
-from tools.plot_losses import plot_losses
-from test_pose import test_pose
+import platform
+import multiprocessing
+import matplotlib.pyplot as plt 
+from torch.utils.data import DataLoader, Dataset, random_split
 from PoseDataset import PoseDataset
 import hrnet
+import resnet
+import SHG 
+import sys
+from alive_progress import alive_bar
+# from alive_progress.animations import bar_factory
+from tools.plot_losses import plot_losses
+from test_pose import test_pose
+import yaml
+from datetime import datetime
+import os
 import mlflow
 import optuna
 
@@ -21,9 +28,6 @@ def train_pose(model, image_train_folder, image_val_folder,
                n_joints=None, train_batch_size=25, patience=10, 
                start_lr=0.001, min_lr=0.00001, epochs=10000,
                threshold=1e-3, augmentations=list(), output_folder=None, trial=None):
-
-    from alive_progress import alive_bar
-    from alive_progress.styles import bar_factory
 
     model_name = model.__class__.__name__
     if not output_folder:
@@ -75,8 +79,9 @@ def train_pose(model, image_train_folder, image_val_folder,
         start_time = time.time()
         num_batches = 0
 
-        bar = bar_factory('.', tip='🚀', background=' ', borders=('🌒','🌌'))
-        with alive_bar(len(train_loader.dataset), title=f"Epoch [{epoch}/{epochs}]", bar=bar, spinner='dots') as bar:
+        # bar = bar_factory('.', tip='🚀', background=' ', borders=('🌒','🌌'))
+        # with alive_bar(len(train_loader.dataset), title=f"Epoch [{epoch}/{epochs}]", bar=bar, spinner='dots') as bar:
+        with alive_bar(len(train_loader.dataset), title=f"Epoch [{epoch}/{epochs}]", bar="smooth", spinner='dots') as bar:
             for images, _, gt_hms, _ in train_loader:
                 images, gt_hms = images.to(device), gt_hms.to(device)
                 optimizer.zero_grad()
