@@ -22,6 +22,9 @@ def train_pose(model, image_train_folder, image_val_folder,
                start_lr=0.001, min_lr=0.00001, epochs=10000,
                threshold=1e-3, augmentations=list(), output_folder=None, trial=None):
 
+    from alive_progress import alive_bar
+    from alive_progress.styles import bar_factory
+
     model_name = model.__class__.__name__
     if not output_folder:
         output_folder = f'out/train-{datetime.now().strftime("%y%m%d_%H%M%S")}-{model_name}'
@@ -54,14 +57,7 @@ def train_pose(model, image_train_folder, image_val_folder,
                               brightness=False, contrast=False, sharpness=False, gamma=False)
 
     train_loader = DataLoader(train_dataset, batch_size=train_batch_size, shuffle=True, num_workers=0)
-    print("check train")
-
     val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False, num_workers=0)
-
-    print("check val")
-
-    # train_loader = DataLoader(train_dataset, batch_size=train_batch_size, shuffle=False)
-    # val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False)
 
     model = model.to(device)
     optimizer = optim.Adam(model.parameters(), lr=start_lr)
@@ -71,33 +67,58 @@ def train_pose(model, image_train_folder, image_val_folder,
     loss_csv_path = os.path.join(output_folder, f'loss_{model_name}.csv')
     lowest_val_loss = float('inf')
     total_time = 0.0
+    prev_lr = -1
 
     for epoch in range(1, epochs + 1):
         model.train()
         train_loss = 0.0
         start_time = time.time()
+        num_batches = 0
 
-        for images, _, gt_hms, _ in train_loader:
-            images, gt_hms = images.to(device), gt_hms.to(device)
-            optimizer.zero_grad()
-            preds = model(images)
-            loss = criterion(preds, gt_hms)
-            loss.backward()
-            optimizer.step()
-            train_loss += loss.item()
-        train_loss /= len(train_loader)
+        bar = bar_factory('.', tip='🚀', background=' ', borders=('🌒','🌌'))
+        with alive_bar(len(train_loader.dataset), title=f"Epoch [{epoch}/{epochs}]", bar=bar, spinner='dots') as bar:
+            for images, _, gt_hms, _ in train_loader:
+                images, gt_hms = images.to(device), gt_hms.to(device)
+                optimizer.zero_grad()
+                preds = model(images)
+                loss = criterion(preds, gt_hms)
+                loss.backward()
+                optimizer.step()
+                train_loss += loss.item()
+                num_batches += 1
+                bar.text = f"Train Loss: {loss.item():.10f}"
+                bar(images.shape[0] if (num_batches * train_batch_size > len(train_loader.dataset)) else train_batch_size)
+
+        train_loss /= num_batches
 
         model.eval()
         val_loss = 0.0
+        num_batches = 0
         with torch.no_grad():
             for images, _, gt_hms, _ in val_loader:
                 images, gt_hms = images.to(device), gt_hms.to(device)
                 preds = model(images)
                 loss = criterion(preds, gt_hms)
                 val_loss += loss.item()
-        val_loss /= len(val_loader)
+                num_batches += 1
+        val_loss /= num_batches
+
         elapsed = time.time() - start_time
         total_time += elapsed
+
+        # Erase the progress bar line from terminal
+        sys.stdout.write('\033[A\033[K')
+
+        # Step LR scheduler
+        scheduler.step(val_loss)
+        current_lr = optimizer.param_groups[0]['lr']
+        if prev_lr == -1:
+            prev_lr = current_lr
+        elif current_lr != prev_lr:
+            print(f"Learning rate changed to {current_lr:.2e}")
+            prev_lr = current_lr
+
+        print(f"Epoch [{epoch}/{epochs}] | Avg. Train Loss: {train_loss:.5e} | Avg. Val Loss: {val_loss:.5e} | Time: {elapsed:.2f}s")
 
         mlflow.log_metric("train_loss", train_loss, step=epoch)
         mlflow.log_metric("val_loss", val_loss, step=epoch)
@@ -110,10 +131,11 @@ def train_pose(model, image_train_folder, image_val_folder,
 
         if val_loss < lowest_val_loss - threshold:
             lowest_val_loss = val_loss
+            print(f"Saving as best model...")
             torch.save(model.state_dict(), os.path.join(output_folder, 'snapshot_best.pth'))
 
-        scheduler.step(val_loss)
-        if optimizer.param_groups[0]['lr'] <= min_lr:
+        if current_lr <= min_lr:
+            print(f"Stopping training: learning rate has reached the minimum threshold ({min_lr})")
             break
 
         if trial:
@@ -123,6 +145,116 @@ def train_pose(model, image_train_folder, image_val_folder,
 
     plot_losses(loss_csv_path)
     return lowest_val_loss, output_folder
+
+# def train_pose(model, image_train_folder, image_val_folder, 
+#                annotation_path, input_size, output_size, device='cpu',
+#                n_joints=None, train_batch_size=25, patience=10, 
+#                start_lr=0.001, min_lr=0.00001, epochs=10000,
+#                threshold=1e-3, augmentations=list(), output_folder=None, trial=None):
+
+#     model_name = model.__class__.__name__
+#     if not output_folder:
+#         output_folder = f'out/train-{datetime.now().strftime("%y%m%d_%H%M%S")}-{model_name}'
+#         os.makedirs(output_folder, exist_ok=True)
+
+#     mlflow.log_params({
+#         "model_name": model_name,
+#         "epochs": epochs,
+#         "learning_rate": start_lr,
+#         "batch_size": train_batch_size,
+#         "patience": patience,
+#         "loss_function": "MSELoss",
+#         "optimizer": "Adam",
+#         "augmentations": ','.join(augmentations)
+#     })
+
+#     aug_flags = {aug: (aug in augmentations) for aug in ["rotate", "scale", "motion_blur", "brightness", "contrast", "sharpness", "gamma"]}
+
+#     train_dataset = PoseDataset(image_folder=image_train_folder,
+#                                 label_file=annotation_path,
+#                                 resize_to=input_size,
+#                                 heatmap_size=output_size,
+#                                 **aug_flags)
+    
+#     val_dataset = PoseDataset(image_folder=image_val_folder,
+#                               label_file=annotation_path,
+#                               resize_to=input_size,
+#                               heatmap_size=output_size,
+#                               rotate=False, scale=False, motion_blur=False,
+#                               brightness=False, contrast=False, sharpness=False, gamma=False)
+
+#     train_loader = DataLoader(train_dataset, batch_size=train_batch_size, shuffle=True, num_workers=0)
+#     print("check train")
+
+#     val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False, num_workers=0)
+
+#     print("check val")
+
+#     # train_loader = DataLoader(train_dataset, batch_size=train_batch_size, shuffle=False)
+#     # val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False)
+
+#     model = model.to(device)
+#     optimizer = optim.Adam(model.parameters(), lr=start_lr)
+#     criterion = nn.MSELoss()
+#     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', factor=0.1, patience=patience, threshold=threshold, min_lr=min_lr)
+
+#     loss_csv_path = os.path.join(output_folder, f'loss_{model_name}.csv')
+#     lowest_val_loss = float('inf')
+#     total_time = 0.0
+
+#     for epoch in range(1, epochs + 1):
+#         model.train()
+#         train_loss = 0.0
+#         start_time = time.time()
+
+#         print(">>> Starting training loop")
+#         for images, _, gt_hms, _ in train_loader:
+#             images, gt_hms = images.to(device), gt_hms.to(device)
+#             optimizer.zero_grad()
+#             preds = model(images)
+#             loss = criterion(preds, gt_hms)
+#             loss.backward()
+#             optimizer.step()
+#             train_loss += loss.item()
+#         train_loss /= len(train_loader)
+
+#         model.eval()
+#         val_loss = 0.0
+#         print(">>> Starting validation loop")
+#         with torch.no_grad():
+#             for images, _, gt_hms, _ in val_loader:
+#                 images, gt_hms = images.to(device), gt_hms.to(device)
+#                 preds = model(images)
+#                 loss = criterion(preds, gt_hms)
+#                 val_loss += loss.item()
+#         val_loss /= len(val_loader)
+#         elapsed = time.time() - start_time
+#         total_time += elapsed
+
+#         mlflow.log_metric("train_loss", train_loss, step=epoch)
+#         mlflow.log_metric("val_loss", val_loss, step=epoch)
+
+#         with open(loss_csv_path, 'a', newline='') as f:
+#             writer = csv.writer(f)
+#             if f.tell() == 0:
+#                 writer.writerow(["epoch", "train_loss", "val_loss", "time"])
+#             writer.writerow([epoch, train_loss, val_loss, elapsed])
+
+#         if val_loss < lowest_val_loss - threshold:
+#             lowest_val_loss = val_loss
+#             torch.save(model.state_dict(), os.path.join(output_folder, 'snapshot_best.pth'))
+
+#         scheduler.step(val_loss)
+#         if optimizer.param_groups[0]['lr'] <= min_lr:
+#             break
+
+#         if trial:
+#             trial.report(val_loss, epoch)
+#             if trial.should_prune():
+#                 raise optuna.exceptions.TrialPruned()
+
+#     plot_losses(loss_csv_path)
+#     return lowest_val_loss, output_folder
 
 def objective(trial, args):
     selected_augs = []
