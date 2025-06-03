@@ -13,7 +13,7 @@ import resnet
 import SHG 
 import sys
 from alive_progress import alive_bar
-from alive_progress.animations import bar_factory
+# from alive_progress.animations import bar_factory
 from tools.plot_losses import plot_losses
 from test_pose import test_pose
 import yaml
@@ -134,7 +134,7 @@ def train_pose(model, image_train_folder, image_val_folder,
             start_time = time.time()
             num_batches = 0
 
-            bar = bar_factory('.', tip='🚀', background=' ', borders=('🌒','🌌'))
+            bar = alive_bar('.', tip='🚀', background=' ', borders=('🌒','🌌'))
             with alive_bar(len(train_dataloader.dataset), title=f"Epoch [{epoch}/{epochs}]", bar=bar, spinner='dots') as bar:
                 for batch_idx, (images, gt_kps, gt_hms, _) in enumerate(train_dataloader):
                     images, gt_hms = images.to(device), gt_hms.to(device)
@@ -284,10 +284,10 @@ def objective(trial, args):
         return best_test_loss
 
 if __name__ == '__main__':
-    image_train_folder = r'SideView\Side_images'
-    image_val_folder   = r'SideView\Side_images'
-    image_test_folder  = r'SideView\Side_images'
-    annotation_path    = r'SideView\merged_labels.csv'
+    image_train_folder = r'SideView\new\images\train'
+    image_val_folder   = r'SideView\new\images\val'
+    image_test_folder  = r'SideView\new\images\test'
+    annotation_path    = r'SideView\new\annotations_final.csv'
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 

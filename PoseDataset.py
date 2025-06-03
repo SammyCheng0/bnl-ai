@@ -101,7 +101,7 @@ def calculate_dataset_mean_std(dataset, batch_size=1):
 class PoseDataset(Dataset):
     # def __init__(self, image_folder, resize_to, heatmap_size, label_file=None, rotate=False, scale=False, motion_blur=False, brightness=False, contrast=False, sharpness=False, mean=None, std=None):
     # def __init__(self, image_folder, resize_to, heatmap_size, label_file=None, rotate=False, scale=True, motion_blur=True, brightness=True, contrast=True, sharpness=True, mean=None, std=None):
-    def __init__(self, image_folder, resize_to, heatmap_size, label_file=None, rotate=False, scale=True, motion_blur=True, brightness=True, contrast=True, sharpness=True, gamma= True, mean=None, std=None):
+    def __init__(self, image_folder, resize_to, heatmap_size, label_file=None, rotate=False, scale=False, motion_blur=False, brightness=False, contrast=True, sharpness=False, gamma= False, mean=None, std=None, save_augmented=False, save_dir='augmented_images'):
         """
         Args:
             image_folder (str): Path to the folder containing images.
@@ -122,8 +122,12 @@ class PoseDataset(Dataset):
         self.labels = pd.read_csv(label_file)
         self.filenames = os.listdir(image_folder)
         self.filenames.sort()
-        self.mean = mean
-        self.std = std
+        # self.mean = mean
+        # self.std = std
+        self.save_augmented = save_augmented
+        self.save_dir = save_dir
+        if self.save_augmented and not os.path.exists(self.save_dir):
+            os.makedirs(self.save_dir)
         
         # Filter image filenames to only those present in the CSV
         csv_filenames = set(self.labels['filename'])
@@ -132,29 +136,9 @@ class PoseDataset(Dataset):
         print(f"Found {len(image_filenames)} matching images out of {len(os.listdir(self.image_folder))} total.")
         self.image_filenames = image_filenames
 
-
-        # print(self)
-
-        # img_name = self.filenames[idx]
-
-        # idx = self.labels[self.labels['filename'] == img_name].index[0]
-
-        # bbox = self.bbox.iloc[idx,:].to_numpy()
-        
-        # img_path = os.path.join(self.image_folder, img_name)
-        # transformed_image = Image.open(img_path).convert("RGB")
-
         # bbox
         df = self.labels.copy()
         self.bbox = df[[col for col in df.columns if col.startswith("bbox_")]]
-        
-        # # Print the filenames found in the CSV file
-        # if 'filename' in self.labels.columns:
-        #     print("Image filenames found in the CSV file:")
-        #     for filename in self.labels['filename'].head(10):  # Show only first 10 for brevity
-        #         print(filename)
-        # else:
-        #     print("No 'filename' column found in the CSV file.")
         
         # keypoints
         df = df.drop(columns=[col for col in df.columns if col.startswith("bbox_")])
@@ -174,11 +158,11 @@ class PoseDataset(Dataset):
             if base_name not in self.bp_hm_index:
                 self.bp_hm_index[base_name] = idx
 
-        if mean is None or std is None:
-            self.mean, self.std = calculate_dataset_mean_std(self)
-        else:
-            self.mean = mean
-            self.std = std
+        # if mean is None or std is None:
+        #     self.mean, self.std = calculate_dataset_mean_std(self)
+        # else:
+        #     self.mean = mean
+        #     self.std = std
         # print('bodypart-heatmap index')
         # print(self.bp_hm_index) 
 
@@ -341,34 +325,6 @@ class PoseDataset(Dataset):
             to_tensor = ToTensor()
             transformed_image = to_tensor(pil_image)
 
-        # if self.brightness:
-        #     # Convert to PIL image for brightness adjustment
-        #     to_pil = ToPILImage()
-        #     pil_image = to_pil(transformed_image)
-
-        #     # Before brightness adjustment
-        #     plt.subplot(1, 2, 1)  # Create a 1x2 grid, this is the first subplot
-        #     plt.imshow(pil_image)
-        #     plt.title('Before Brightness')
-        #     plt.axis('off')  # Hide axes for a cleaner look
-
-        #     # Apply brightness adjustment
-        #     brightness_factor = round(random.uniform(1.5, 2), 1)
-        #     print(f"Brightness factor: {brightness_factor}")
-        #     pil_image_bright = ImageEnhance.Brightness(pil_image).enhance(brightness_factor)
-
-        #     # After brightness adjustment
-        #     plt.subplot(1, 2, 2)  # This is the second subplot
-        #     plt.imshow(pil_image_bright)
-        #     plt.title('After Brightness')
-        #     plt.axis('off')
-
-        #     # Show both images side by side
-        #     plt.show()
-
-        #     # Convert back to tensor after applying enhancement
-        #     to_tensor = ToTensor()
-        #     transformed_image = to_tensor(pil_image_bright)
 
         if self.contrast:
             to_pil = ToPILImage()
@@ -379,35 +335,6 @@ class PoseDataset(Dataset):
             to_tensor = ToTensor()
             transformed_image = to_tensor(pil_image)
 
-        # if self.contrast:
-        #     # Convert to PIL image for contrast adjustment
-        #     to_pil = ToPILImage()
-        #     pil_image = to_pil(transformed_image)
-
-        #     # Before contrast adjustment
-        #     plt.subplot(1, 2, 1)
-        #     plt.imshow(pil_image)
-        #     plt.title('Before Contrast')
-        #     plt.axis('off')
-
-        #     # Apply contrast adjustment
-        #     contrast_factor = round(random.uniform(1, 1.5), 1)
-        #     print(f"Contrast factor: {contrast_factor}")
-        #     pil_image_contrast = ImageEnhance.Contrast(pil_image).enhance(contrast_factor)
-
-        #     # After contrast adjustment
-        #     plt.subplot(1, 2, 2)
-        #     plt.imshow(pil_image_contrast)
-        #     plt.title('After Contrast')
-        #     plt.axis('off')
-
-        #     # Show both images
-        #     plt.show()
-
-        #     # Convert back to tensor after applying enhancement
-        #     to_tensor = ToTensor()
-        #     transformed_image = to_tensor(pil_image_contrast)
-
         if self.sharpness:
             to_pil = ToPILImage()
             pil_image = to_pil(transformed_image)
@@ -417,34 +344,6 @@ class PoseDataset(Dataset):
             to_tensor = ToTensor()
             transformed_image = to_tensor(pil_image)
 
-        # if self.sharpness:
-        #     # Convert to PIL image for sharpness adjustment
-        #     to_pil = ToPILImage()
-        #     pil_image = to_pil(transformed_image)
-
-        #     # Before sharpness adjustment
-        #     plt.subplot(1, 2, 1)
-        #     plt.imshow(pil_image)
-        #     plt.title('Before Sharpness')
-        #     plt.axis('off')
-
-        #     # Apply sharpness adjustment
-        #     sharpness_factor = round(random.uniform(0.5, 2), 1)
-        #     print(f"Sharpness factor: {sharpness_factor}")
-        #     pil_image_sharp = ImageEnhance.Sharpness(pil_image).enhance(sharpness_factor)
-
-        #     # After sharpness adjustment
-        #     plt.subplot(1, 2, 2)
-        #     plt.imshow(pil_image_sharp)
-        #     plt.title('After Sharpness')
-        #     plt.axis('off')
-
-        #     # Show both images
-        #     plt.show()
-
-        #     # Convert back to tensor after applying enhancement
-        #     to_tensor = ToTensor()
-        #     transformed_image = to_tensor(pil_image_sharp)
 
         if self.gamma:
             to_pil = ToPILImage()
@@ -459,38 +358,6 @@ class PoseDataset(Dataset):
             to_tensor = ToTensor()
             transformed_image = to_tensor(pil_image)
 
-        # if self.gamma:
-        #     # Convert to PIL image for gamma adjustment
-        #     to_pil = ToPILImage()
-        #     pil_image = to_pil(transformed_image)
-
-        #     # Show before gamma adjustment
-        #     plt.subplot(1, 2, 1)
-            # plt.imshow(pil_image)
-            # plt.title('Before Gamma')
-            # plt.axis('off')
-
-            # # Apply gamma correction
-            # gamma = round(random.uniform(0.8, 1.3), 1)
-            # print(f"Gamma factor: {gamma}")
-            # inv_gamma = 1.0 / gamma
-            # lut = [pow(x / 255., inv_gamma) * 255 for x in range(256)]
-            # lut = lut * 3  # for R, G, B
-            # pil_image_gamma = pil_image.point(lut)
-
-            # # Show after gamma adjustment
-            # plt.subplot(1, 2, 2)
-            # plt.imshow(pil_image_gamma)
-            # plt.title('After Gamma')
-            # plt.axis('off')
-
-            # # Display both images
-            # plt.show()
-
-            # # Convert back to tensor
-            # to_tensor = ToTensor()
-            # transformed_image = to_tensor(pil_image_gamma)
-
         if self.mean is not None and self.std is not None:
             output_path = 'train_normalization.txt'
             with open(output_path, 'w') as f:
@@ -503,10 +370,21 @@ class PoseDataset(Dataset):
         # std_image = transformed_image.std(dim=[1, 2])  # Std per channel (R, G, B)
 
         # transformed_image = F.normalize(transformed_image, mean= mean_image, std= std_image)
-        # mean_image = ([0.1058, 0.1058, 0.1058])
-        # std_image = ([0.1372, 0.1372, 0.1372])
-        # transformed_image = F.normalize(transformed_image, mean= mean_image, std= std_image)
+        mean_image = ([0.5, 0.5, 0.5])
+        std_image = ([0.5, 0.5, 0.5])
+        transformed_image = F.normalize(transformed_image, mean= mean_image, std= std_image)
 
+        if self.save_augmented:
+            # Convert to PIL
+            to_pil = ToPILImage()
+            pil_image = to_pil(transformed_image)
+
+            # Construct filename
+            base_filename = self.image_files[idx].split('.')[0]
+            save_path = os.path.join(self.save_dir, f"{base_filename}_augmented.jpg")
+
+            # Save image
+            pil_image.save(save_path)
 
 
         # ----------------------------------
